@@ -19,6 +19,7 @@ StatusResource::StatusResource(std::string c_key,std::string c_sec, std::string 
 }
 
 StatusResource::StatusResource(Twiauth certifyer):Twistream(certifyer){
+    APIRESOURCENAME = "statuses";
 }
 
 std::vector<tweet> StatusResource::hometimeline(std::map<std::string,std::string> paramaters){

@@ -153,6 +153,8 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME,
     http_header += AuthHeader+
     "\r\nConnection: Close\r\n\r\n";
     
+    //std::cout<<http_header<<std::endl;//for debug
+    
     strResponse = https_body(http_header,"api.twitter.com");
     
     std::string strerr;
