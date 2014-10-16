@@ -104,16 +104,11 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME){
         throw std::runtime_error(err);
     }
     
-    if (response.is<picojson::object>()){
-        picojson::object analyte = response.get<picojson::object>();
-        if (analyte.count("errors") == 1) {
-            std::string errormassage;
-            unsigned int errorcode;
-            errors err(analyte["errors"].get<picojson::object>());
-            err.getMassage(errormassage);
-            err.getErrorCode(errorcode);
-            throw TwitterException(errormassage, errorcode);
-        }
+    //TwitterAPIからエラーが返ってきていないかチェック
+    try {
+        checkAPIError();
+    } catch (const TwitterException &err) {
+        throw ;
     }
     
     return http_header;
@@ -161,6 +156,17 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME,
     
     //std::cout<<getRawResponse()<<std::endl;//for debug
     
+    //TwitterAPIからエラーが返ってきていないかチェック
+    try {
+        checkAPIError();
+    } catch (const TwitterException &err) {
+        throw ;
+    }
+    
+    return http_header;
+}
+
+void Twistream::checkAPIError(){
     //TwitterAPIがerrorを返した際に例外を投げる処理//
     if (response.is<picojson::object>()){
         picojson::object analyte = response.get<picojson::object>();
@@ -185,6 +191,4 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME,
             throw TwitterAPIError;//TwitterAPIがエラーを返した時に投げる例外
         }
     }
-    
-    return http_header;
 }

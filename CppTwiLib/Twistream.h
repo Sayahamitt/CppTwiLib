@@ -47,6 +47,7 @@ protected:
     std::string requesttoTwitter(HttpMethod method,std::string APINAME);
     std::string requesttoTwitter(HttpMethod method,std::string APINAME,
                                    std::map<std::string, std::string> parameters);
+    void checkAPIError();
 };
 
 
