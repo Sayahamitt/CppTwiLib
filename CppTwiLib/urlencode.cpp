@@ -31,19 +31,6 @@ std::string percentEnc(std::string str){
 	}
 	//ストリームの文字列をstringのインスタンスに代入
 	encoded = out.str();
-
-	//アルファベットを大文字にする(std::hexでは16進のa-fは小文字)
-    /*
-	for(int i=0;encoded.size()>i;i++){
-		if(encoded[i]=='%'){
-			for(int j=1;j<=2;j++){//%エンコードの符号は%のあと2文字なので、
-								  //'%'検出後2文字分をチェックし英小文字なら大文字へ置換
-				if(LOWER_BEGIN_UTF8<=encoded[i+j] && encoded[i+j]<=LOWER_BEGIN_UTF8+25)
-					encoded[i+j] -= (LOWER_BEGIN_UTF8 - CAPITAL_BEGIN_UTF8);
-			}
-			i+=2;
-		}
-	}*/
 	
 	return encoded;
 }
