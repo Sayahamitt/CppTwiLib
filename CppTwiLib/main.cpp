@@ -35,8 +35,11 @@ void AuthTest(){
     
     std::cout<<"AccessToken :"<<certifyer.getAccessToken()<<std::endl;
     std::cout<<"AccessTokenSecret :"<<certifyer.getAccessTokenSecret()<<std::endl;
+    
+    StatusResource status(certifyer);
+    status.debug();
+    std::cout<<status.isWhomStream()<<std::endl;
 }
-
 void APITest(){
     std::map<std::string,std::string> param;
     

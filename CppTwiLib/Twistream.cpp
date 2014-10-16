@@ -20,6 +20,13 @@ APIDOMEINNAME("api.twitter.com"),
 APIVERSION ("1.1"){
 }
 
+Twistream::Twistream(Twiauth certifyer):
+APIPROTOCOL("https://"),
+APIDOMEINNAME("api.twitter.com"),
+APIVERSION ("1.1"),
+auth_header(certifyer){
+}
+
 Twistream::~Twistream(){}
 
 std::string Twistream::get_authorize_url(){
@@ -191,4 +198,8 @@ void Twistream::checkAPIError(){
             throw TwitterAPIError;//TwitterAPIがエラーを返した時に投げる例外
         }
     }
+}
+
+void Twistream::debug(){
+    auth_header.debug();
 }

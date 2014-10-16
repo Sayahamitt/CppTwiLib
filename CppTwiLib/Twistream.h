@@ -33,6 +33,7 @@ public:
     Twistream(std::string c_key, std::string c_sec);
     Twistream(std::string c_key, std::string c_sec,
               std::string token, std::string token_sec);
+    Twistream(Twiauth certifyer);
     ~Twistream();
     
     std::string get_authorize_url();
@@ -41,6 +42,8 @@ public:
     void showWhomStream();
     std::string isWhomStream();
     std::string getRawResponse();
+    
+    void debug();
     
 protected:
     std::string StringtoURLencode(std::string PlainString);

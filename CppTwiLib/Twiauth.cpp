@@ -31,8 +31,7 @@ oauth_version("1.0"),
 c_key(a_c_key),
 c_sec(a_c_sec)
 {
-  //access_token=my_access_token;//for debug
-  //access_token_sec=my_access_sec;//for debug
+    isempty = false;
 }
 
 Twiauth::Twiauth(std::string a_c_key, std::string a_c_sec, std::string token,std::string token_sec):
@@ -52,13 +51,59 @@ oauth_version("1.0"),
 c_key(a_c_key),
 c_sec(a_c_sec)
 {
-    //c_key = a_c_key;
-    //c_sec = a_c_sec;
     access_token = token;
     access_token_sec = token_sec;
+    
+    isempty = false;
+}
+
+Twiauth::Twiauth(const Twiauth &obj):
+request_token_url("https://api.twitter.com/oauth/request_token"),
+authorize_url("https://api.twitter.com/oauth/authorize"),
+access_token_url("https://api.twitter.com/oauth/access_token"),
+c_key_key("oauth_consumer_key"),
+nonce_key("oauth_nonce"),
+sig_method_key("oauth_signature_method"),
+signature_key("oauth_signature"),
+timestamp_key("oauth_timestamp"),
+verifier_key("oauth_verifier"),
+oauth_version_key("oauth_version"),
+token_key("oauth_token"),
+sig_method("HMAC-SHA1"),
+oauth_version("1.0"),
+c_key(obj.c_key),
+c_sec(obj.c_sec)
+{
+    this->request_token = obj.request_token;
+    this->request_token_sec = obj.request_token_sec;
+    this->access_token = obj.access_token;
+    this->access_token_sec = obj.access_token_sec;
+    this->m_user_id = obj.m_user_id;
+    this->m_screen_name = obj.m_screen_name;
+    this->isempty = obj.isempty;
+}
+
+Twiauth::Twiauth(){
+    isempty = true;
 }
 
 Twiauth::~Twiauth(){}
+
+Twiauth& Twiauth::operator=(const Twiauth& left){
+    this->request_token = left.request_token;
+    this->request_token_sec = left.request_token_sec;
+    this->access_token = left.access_token;
+    this->access_token_sec = left.access_token_sec;
+    this->m_user_id = left.m_user_id;
+    this->m_screen_name = left.m_screen_name;
+    this->isempty = left.isempty;
+    
+    return *this;
+}
+
+bool Twiauth::empty(){
+    return isempty;
+}
 
 std::string Twiauth::create_header(api_method_type method,std::string url,stringparams params){
   stringparams oauth_params;
@@ -269,4 +314,12 @@ std::string Twiauth::getAccessToken(){
 
 std::string Twiauth::getAccessTokenSecret(){
     return access_token_sec;
+}
+
+void Twiauth::debug(){
+    std::cout<<c_key<<std::endl;
+    std::cout<<c_sec<<std::endl;
+    std::cout<<access_token<<std::endl;
+    std::cout<<access_token_sec<<std::endl;
+    
 }

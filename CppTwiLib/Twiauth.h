@@ -48,12 +48,22 @@ class Twiauth{
 	};
 	
 	std::string create_header(api_method_type method,std::string url,stringparams params);
+    
+    bool isempty;
 	
  public:
 	
 	Twiauth(std::string a_c_key, std::string a_c_sec, std::string token,std::string token_sec);
     Twiauth(std::string a_c_key, std::string a_c_sec);
+    Twiauth(const Twiauth &obj);
+    Twiauth();
 	~Twiauth();
+    
+    Twiauth& operator=(const Twiauth& left);
+    
+    bool empty();
+    
+    void debug();
     
     std::string get_authorize_url();
     bool set_access_token(std::string pin);
