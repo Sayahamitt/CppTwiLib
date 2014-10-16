@@ -116,6 +116,10 @@ std::string Twiauth::create_header(api_method_type method,std::string url,string
   char co_nonce[33];
   std::stringstream out_stream;
   std::string sig_plain;
+    
+    std::string nonce;
+    std::string signature;
+    std::string timestamp;
 
   unsigned char co_signature[SHA_DIGEST_LENGTH];
   unsigned int co_siglen;

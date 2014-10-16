@@ -26,9 +26,6 @@ class Twiauth{
 	const std::string sig_method;
 	const std::string oauth_version;
 	
-	std::string nonce;
-	std::string signature;
-	std::string timestamp;
 	std::string request_token;
 	std::string request_token_sec;
 	std::string access_token;
