@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #include "Twiauth.h"
 #include "Twistream.h"
@@ -14,11 +15,18 @@ void AuthTest();
 void APITest();
 
 int main(){
-    AuthTest();
+    //AuthTest();
+    APITest();
   return 0;
 }
 
 void AuthTest(){
+    std::map<std::string,std::string> param;
+    
+    //param["trim_user"]="true";
+    param["count"]="3";
+    param["consributor_details"]="true";
+    
     Twiauth certifyer(c_key,c_sec);
     std::string pincode;
     
@@ -37,29 +45,48 @@ void AuthTest(){
     std::cout<<"AccessTokenSecret :"<<certifyer.getAccessTokenSecret()<<std::endl;
     
     StatusResource status(certifyer);
-    status.debug();
-    std::cout<<status.isWhomStream()<<std::endl;
+    //status.debug();
+    //StatusResource status(c_key,c_sec,certifyer.getAccessToken(),certifyer.getAccessTokenSecret());
+    std::string poststr;
+    std::cout<<"ツイートを入力してください"<<std::endl;
+    std::cin>>poststr;
+    status.update(poststr);
+    //status.hometimeline(param);
 }
+
 void APITest(){
     std::map<std::string,std::string> param;
-    
+    std::map<std::string,std::string> Userparam;
+    std::vector<tweet> timeline;
+    user account;
+    std::string name;
+    std::string status;
     
     //param["trim_user"]="true";
-    //param["count"]="3";
-    //param["consributor_details"]="true";
+    param["count"]="3";
+    param["consributor_details"]="true";
     
-    param["screen_name"]="roki0gjm";
+    Userparam["screen_name"]="roki0gjm";
     UsersResource cltest(c_key,c_sec,my_access_token,my_access_sec);
     StatusResource posttest(c_key,c_sec,my_access_token,my_access_sec);
     //cltest.set_access_token_cui();
     //posttest.hometimeline(param);
     //std::cout<<"\n"<<std::endl;
-    //posttest.hometimeline(param);
-    user test;
-    test = cltest.users_lookup(param);
-    std::string temp;
-    test.getScreenName(temp);
-    std::cout<<temp<<std::endl;
+    timeline = posttest.hometimeline(param);
+    
+    //std::cout<<posttest.getRawResponse()<<std::endl;
+    
+    for (std::vector<tweet>::iterator i = timeline.begin(); i != timeline.end(); i++) {
+        (*i).getUser(account);
+        account.getName(name);
+        (*i).getText(status);
+        
+        std::cout<<name<<":"<<status<<std::endl;
+    }
+    
+    //std::string temp;
+    //test.getScreenName(temp);
+    //std::cout<<temp<<std::endl;
     //cltest.showWhomStream();
     //posttest.user_timeline("_motchy__",param);
     //posttest.update("もっかいてすと");
