@@ -12,7 +12,7 @@
 #include <string>
 
 #include "objects.h"
-#include "user.h"
+class user;
 
 class tweet : public Objects{
 protected:
@@ -22,6 +22,15 @@ public:
     tweet();
     ~tweet();
     
+    bool getCreatedat(std::string& destination);
+    bool getID(int64_t& destination);
+    bool getinReplytoScreenName(std::string& destination);
+    bool getinReplytoStatusID(int64_t& destination);
+    bool getRetweetCount(int& destination);
+    bool isRetweeted(bool& destination);
+    bool getRetweetedStatus(tweet& destination);
+    bool getSource(std::string& destination);
+    bool getText(std::string& destination);
     bool getUser(user& destination);
     
 };

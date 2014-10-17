@@ -75,7 +75,7 @@ tweet StatusResource::update(std::string poststr){
     
     http_header = requesttoTwitter(POST, "update.json", param);
     
-    std::cout<<http_header<<std::endl;//for debug
+    //std::cout<<http_header<<std::endl;//for debug
     //std::cout<<"\n"+getRawResponse()<<std::endl;//for debug
     
     if (response.is<picojson::object>()){
