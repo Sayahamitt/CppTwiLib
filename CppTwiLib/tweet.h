@@ -24,8 +24,10 @@ public:
     
     bool getCreatedat(std::string& destination);
     bool getID(int64_t& destination);
+    bool getIDstr(std::string& destination);
     bool getinReplytoScreenName(std::string& destination);
     bool getinReplytoStatusID(int64_t& destination);
+    bool getinReplytoStatusIDstr(std::string& destination);
     bool getRetweetCount(int& destination);
     bool isRetweeted(bool& destination);
     bool getRetweetedStatus(tweet& destination);

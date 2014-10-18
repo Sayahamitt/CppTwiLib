@@ -30,6 +30,10 @@ bool tweet::getID(int64_t& destination){
     return res;
 }
 
+bool tweet::getIDstr(std::string &destination){
+    return getValuefromResponse<std::string>("id_str", destination);
+}
+
 bool tweet::getinReplytoScreenName(std::string& destination){
     return getValuefromResponse<std::string>("in_reply_to_screen_name",destination);
 }
@@ -42,6 +46,10 @@ bool tweet::getinReplytoStatusID(int64_t& destination){
     destination = (int64_t)temp;
     
     return res;
+}
+
+bool tweet::getinReplytoStatusIDstr(std::string &destination){
+    return getValuefromResponse<std::string>("in_reply_to_status_id_str", destination);
 }
 
 bool tweet::getRetweetCount(int& destination){
