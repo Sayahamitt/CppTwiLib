@@ -13,19 +13,66 @@
 
 void AuthTest();
 void APITest();
+void StatusTest();
 
 int main(){
+    StatusTest();
     //AuthTest();
-    APITest();
+    //APITest();
   return 0;
+}
+
+void StatusTest(){
+    std::map<std::string,std::string> param;
+    StatusResource statusapi(c_key,c_sec,my_access_token,my_access_sec);
+    std::vector<tweet> timeline;
+    user account;
+    std::string name;
+    std::string status;
+    tweet mypost;
+    tweet myshowing;
+    int64_t mypost_id;
+
+    //param["count"]="200";
+
+    timeline = statusapi.user_timeline("_motchy__", param);
+    
+    for (std::vector<tweet>::iterator i = timeline.begin(); i != timeline.end(); i++) {
+        (*i).getUser(account);
+        account.getName(name);
+        (*i).getText(status);
+        (*i).getID(mypost_id);
+        
+        std::cout<<name<<":"<<status<<std::endl;
+        std::cout<<mypost_id<<std::endl;
+    }
+    timeline[0].getID(mypost_id);
+    statusapi.retweet_id(mypost_id);
+    /*
+    std::string poststr;
+    std::cout<<"ツイートを入力してください"<<std::endl;
+    std::cin>>poststr;
+    mypost = statusapi.update(poststr);
+    mypost.getID(mypost_id);
+    mypost.getText(status);
+    std::cout<<mypost_id<<std::endl;
+    std::cout<<status<<std::endl;
+    myshowing = statusapi.show_id(mypost_id, param);
+    myshowing.getText(status);
+    std::cout<<"showing : "<<status<<std::endl;
+    std::cin>>name;
+    statusapi.destory_id(mypost_id);
+     */
 }
 
 void AuthTest(){
     std::map<std::string,std::string> param;
     
-    //param["trim_user"]="true";
-    param["count"]="3";
-    param["consributor_details"]="true";
+    std::vector<tweet> timeline;
+    user account;
+    std::string name;
+    std::string statusdata;
+    
     
     Twiauth certifyer(c_key,c_sec);
     std::string pincode;
@@ -47,11 +94,23 @@ void AuthTest(){
     StatusResource status(certifyer);
     //status.debug();
     //StatusResource status(c_key,c_sec,certifyer.getAccessToken(),certifyer.getAccessTokenSecret());
+    /*
     std::string poststr;
     std::cout<<"ツイートを入力してください"<<std::endl;
     std::cin>>poststr;
     status.update(poststr);
-    //status.hometimeline(param);
+    */
+    
+    param["count"]="10";
+    timeline = status.hometimeline(param);
+    
+    for (std::vector<tweet>::iterator i = timeline.begin(); i != timeline.end(); i++) {
+        (*i).getUser(account);
+        account.getName(name);
+        (*i).getText(statusdata);
+        
+        std::cout<<name<<":"<<statusdata<<std::endl;
+    }
 }
 
 void APITest(){

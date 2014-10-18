@@ -89,9 +89,12 @@ tweet StatusResource::show_id(int64_t ID,std::map<std::string, std::string> para
 }
 
 tweet StatusResource::destory_id(int64_t ID){
+    std::map<std::string, std::string> paramaters;
     tweet status;
     
-    requesttoTwitter(POST, "destroy/"+std::to_string(ID)+".json");
+    paramaters["id"]=std::to_string(ID);
+    
+    requesttoTwitter(POST, "destroy/"+std::to_string(ID)+".json",paramaters);
     
     if (response.is<picojson::object>()){
         status = tweet(response.get<picojson::object>());
@@ -120,9 +123,12 @@ tweet StatusResource::update(std::string poststr){
 }
 
 tweet StatusResource::retweet_id(int64_t ID){
+    std::map<std::string, std::string> paramaters;
     tweet status;
     
-    requesttoTwitter(POST, "retweet/"+std::to_string(ID)+".json");
+    paramaters["id"]=std::to_string(ID);
+    
+    requesttoTwitter(POST, "retweet/"+std::to_string(ID)+".json", paramaters);
     
     if (response.is<picojson::object>()){
         status = tweet(response.get<picojson::object>());
@@ -149,7 +155,7 @@ std::vector<int64_t> StatusResource::retweeters_ids(int64_t ID){
         ids = resObj["ids"].get<picojson::array>();
         
         for (picojson::array::iterator i = ids.begin(); i != ids.end(); i++) {
-            retweeters[counter++] = (*i).get<int64_t>();
+            retweeters[counter++] = (int64_t)(*i).get<double>();
         }
         
         param["cursor"]=nextCoursor;
