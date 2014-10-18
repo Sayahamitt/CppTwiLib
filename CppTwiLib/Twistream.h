@@ -2,6 +2,7 @@
 #define TWISTREAM_H
 
 #include <string>
+#include <vector>
 
 #include "Twiauth.h"
 #include "httpssocket.h"
@@ -9,6 +10,7 @@
 #include "../picojson.h"
 
 #include "user.h"
+#include "tweet.h"
 #include "errors.h"
 
 class Twistream{
@@ -50,6 +52,25 @@ protected:
     std::string requesttoTwitter(HttpMethod method,std::string APINAME);
     std::string requesttoTwitter(HttpMethod method,std::string APINAME,
                                    std::map<std::string, std::string> parameters);
+    template<typename TYPE>
+    bool createObjectsArray(std::vector<TYPE>& destination){
+        bool state = true;
+        if (response.is<picojson::array>()){
+            picojson::array& picoTL = response.get<picojson::array>();
+            
+            for (picojson::array::iterator i = picoTL.begin(); i != picoTL.end(); i++) {
+                if (!(*i).is<picojson::array>()) {
+                    destination.push_back( (*i).get<picojson::object>() );
+                }
+                state = false;
+            }
+        }else if (response.is<picojson::object>()){
+            destination.push_back(response.get<picojson::object>());
+        }
+        
+        return state;
+    }
+    
     void checkAPIError();
 };
 

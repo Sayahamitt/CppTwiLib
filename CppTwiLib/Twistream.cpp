@@ -175,6 +175,7 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME,
     return http_header;
 }
 
+
 void Twistream::checkAPIError(){
     //TwitterAPIがerrorを返した際に例外を投げる処理//
     if (response.is<picojson::object>()){

@@ -147,6 +147,3 @@ bool user::getWithheldinCountries(std::string &destination){
 bool user::getWithheldScope(std::string &destination){
     return getValuefromResponse<std::string>("withheld_scope", destination);
 }
-/*
-    return getValuefromResponse<>("", destination);
-*/
