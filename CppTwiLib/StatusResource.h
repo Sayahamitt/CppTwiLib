@@ -17,7 +17,6 @@ public:
     StatusResource(std::string c_key, std::string c_sec);
     StatusResource(std::string c_key, std::string c_sec, std::string token, std::string token_sec);
     StatusResource(Twiauth certifyer);
-
     
     std::vector<tweet> hometimeline(std::map<std::string, std::string> paramaters);
     std::vector<tweet> user_timeline(std::string screenname, std::map<std::string, std::string> paramaters);

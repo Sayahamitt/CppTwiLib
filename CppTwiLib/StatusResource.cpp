@@ -28,18 +28,7 @@ std::vector<tweet> StatusResource::hometimeline(std::map<std::string,std::string
     
     http_header = requesttoTwitter(GET,"home_timeline.json", paramaters);
     
-    //std::cout<<http_header<<std::endl;//for debug
-    //std::cout<<getRawResponse()<<std::endl;//for debug
-    
-    if (response.is<picojson::array>()){
-        //std::cout<<"\njson is array"<<std::endl;for debug
-        picojson::array& picoTL = response.get<picojson::array>();
-        
-        for (picojson::array::iterator i = picoTL.begin(); i != picoTL.end(); i++) {
-            //std::cout<<"\njson is array"<<std::endl;  //for debug
-            timeline.push_back( (*i).get<picojson::object>() );
-        }
-    }
+    createObjectsArray(timeline);
     return timeline;
 }
 
@@ -52,15 +41,8 @@ std::vector<tweet> StatusResource::user_timeline(std::string screenname,std::map
     
     http_header = requesttoTwitter(GET, "user_timeline.json",paramaters);
     
-    picojson::object strip;
-    
-    if (response.is<picojson::array>()){
-        picojson::array& picoTL = response.get<picojson::array>();
-        
-        for (picojson::array::iterator i = picoTL.begin(); i != picoTL.end(); i++) {
-            timeline.push_back( (*i).get<picojson::object>() );
-        }
-    }
+    createObjectsArray(timeline);
+
     return timeline;
 }
 
