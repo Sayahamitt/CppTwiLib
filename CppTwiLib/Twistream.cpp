@@ -1,9 +1,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "Twistream.h"
-
 #include "urlencode.h"
+#include "Twistream.h"
 
 Twistream::Twistream(std::string c_key, std::string c_sec):
 auth_header(c_key,c_sec),
@@ -133,7 +132,11 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME,
     for (std::map<std::string,std::string>::iterator itargparam =parameters.begin();
          itargparam != parameters.end();
          itargparam++) {
-        param.add(itargparam->first, itargparam->second);
+        if (method==GET) {
+            param.add(itargparam->first, percentEnc(itargparam->second));
+        }else if (method == POST){
+            param.add(itargparam->first, itargparam->second);
+        }
     }
     
     param.sort_by_key();
