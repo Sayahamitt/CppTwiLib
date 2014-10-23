@@ -32,7 +32,7 @@ public:
     bool getSlug(std::string& destination);
     bool getFullName(std::string& destination);
     bool getDescription(std::string& destination);
-    bool getUser(user& destination);
+    bool getOwnerUser(user& destination);
     bool isFollowing(bool& destination);
 };
 

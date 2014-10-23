@@ -88,7 +88,7 @@ bool list::isFollowing(bool& destination){
     return getValuefromResponse<bool>("description", destination);
 }
 
-bool list::getUser(user& destination){
+bool list::getOwnerUser(user& destination){
     picojson::object temp;
     bool res;
     
