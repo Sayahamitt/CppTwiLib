@@ -17,10 +17,21 @@
 class HttpsSocket{
 private:
     std::string HostNname;
-    std::string hostrequest;
-public:
-    HttpsSocket(std::string inHost);
     
+    std::string ResponseString;
+    std::string ResponseBody;
+    unsigned int ResponeCode;
+public:
+    HttpsSocket(std::string inHost, std::string requestHeader);
+    HttpsSocket(HttpsSocket& obj);
+    ~HttpsSocket();
+    
+    HttpsSocket& operator=(const HttpsSocket& rhs);
+    
+    std::string getResponsebody();
+    unsigned int getResponeCode();
+    
+private:
     std::string https_socket(std::string request_str);
     std::string https_body(std::string request_str);
 };
