@@ -38,10 +38,10 @@ std::vector<user> UsersResource::lookup(std::vector<std::string>& namelist){
     return userlist;
 }
 
-user UsersResource::show_id(int64_t ID,std::map<std::string, std::string> parameters){
+user UsersResource::show_id(std::string userID,std::map<std::string, std::string> parameters){
     user account;
     
-    parameters["id"]=std::to_string(ID);
+    parameters["id"]= userID;
     
     requesttoTwitter(GET, "show.json",parameters);
     
@@ -60,6 +60,7 @@ std::vector<user> UsersResource::search(std::map<std::string, std::string> param
     return userlist;
 }
 
+/*以下テスト未実施
 std::vector<user> UsersResource::contributees(std::string screenname,std::map<std::string, std::string> parameters){
     std::vector<user> userlist;
     
@@ -81,3 +82,4 @@ std::vector<user> UsersResource::contributors(std::string screenname,std::map<st
     
     return userlist;
 }
+*/

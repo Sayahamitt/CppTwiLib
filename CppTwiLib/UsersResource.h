@@ -18,10 +18,11 @@ public:
     UsersResource(Twiauth certifyer);
     
     std::vector<user> lookup(std::vector<std::string>& namelist);
-    user show_id(int64_t ID,std::map<std::string, std::string> parameters);
+    user show_id(std::string userID,std::map<std::string, std::string> parameters);
     std::vector<user> search(std::map<std::string, std::string> parameters);
+    /*以下テスト未実施。
     std::vector<user> contributees(std::string screenname,std::map<std::string, std::string> parameters);
     std::vector<user> contributors(std::string screenname,std::map<std::string, std::string> parameters);
-
+     */
 };
 #endif /* defined(__CppTwiLib__Users__) */
