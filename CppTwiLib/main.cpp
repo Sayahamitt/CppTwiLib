@@ -5,6 +5,7 @@
 #include "Twistream.h"
 #include "UsersResource.h"
 #include "StatusResource.h"
+#include "ListsResource.h"
 #include "user.h"
 
 #include "stringparams.h"
@@ -14,12 +15,53 @@
 void AuthTest();
 void APITest();
 void StatusTest();
-
+void UserTest();
+void ListsTest();
+    
 int main(){
-    StatusTest();
+    UserTest();
+    //StatusTest();
     //AuthTest();
     //APITest();
   return 0;
+}
+
+void ListsTest(){
+    std::map<std::string,std::string> param;
+    std::vector<std::string> namelist;
+    ListsResource listskh3s4hx35pwt8api(c_key,c_sec,my_access_token,my_access_sec);
+}
+
+void UserTest(){
+    std::map<std::string,std::string> param;
+    std::vector<std::string> namelist;
+    UsersResource userapi(c_key,c_sec,my_access_token,my_access_sec);
+    
+    std::string name;
+    std::string userIDstr;
+    int follower;
+    user account;
+    
+    namelist.push_back("roki0gjm");
+    namelist.push_back("sayahamitt");
+    namelist.push_back("_motchy__");
+    std::vector<user> userlist = userapi.lookup(namelist);
+    
+    for (std::vector<user>::iterator i = userlist.begin(); i != userlist.end(); i++) {
+        (*i).getName(name);
+        (*i).getIDstr(userIDstr);
+        
+        std::cout<<name<<std::endl;
+    }
+    
+    account = userapi.show_id(userIDstr, param);
+    //std::cout<<userapi.getRawResponse()<<std::endl;
+    account.getName(name);
+    account.getFollowersCount(follower);
+    
+    std::cout<<name<<" さんのフォロワー数:"<<follower<<"人"<<std::endl;
+    
+    
 }
 
 void StatusTest(){
@@ -94,12 +136,12 @@ void AuthTest(){
     StatusResource status(certifyer);
     //status.debug();
     //StatusResource status(c_key,c_sec,certifyer.getAccessToken(),certifyer.getAccessTokenSecret());
-    /*
+    
     std::string poststr;
     std::cout<<"ツイートを入力してください"<<std::endl;
     std::cin>>poststr;
     status.update(poststr);
-    */
+    
     
     param["count"]="10";
     timeline = status.hometimeline(param);
