@@ -19,7 +19,10 @@ protected:
 public:
     Objects(picojson::object strip);
     Objects();
+    Objects(const Objects& obj);
     virtual ~Objects();
+    
+    Objects& operator=(const Objects& rhs);
     
     void setJson(picojson::object);
     bool empty();
