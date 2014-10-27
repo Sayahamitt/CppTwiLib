@@ -26,9 +26,9 @@ protected:
         POST
     };
     
-    const std::string APIPROTOCOL;
-    const std::string APIDOMEINNAME;
-    const std::string APIVERSION;
+    const static std::string APIPROTOCOL;
+    const static std::string APIDOMEINNAME;
+    const static std::string APIVERSION;
     std::string APIRESOURCENAME;
     
 public:

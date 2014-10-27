@@ -4,25 +4,20 @@
 #include "urlencode.h"
 #include "Twistream.h"
 
+const std::string Twistream::APIPROTOCOL = "https://";
+const std::string Twistream::APIDOMEINNAME = "api.twitter.com";
+const std::string Twistream::APIVERSION = "1.1";
+
 Twistream::Twistream(std::string c_key, std::string c_sec):
-auth_header(c_key,c_sec),
-APIPROTOCOL("https://"),
-APIDOMEINNAME("api.twitter.com"),
-APIVERSION ("1.1"){
+auth_header(c_key,c_sec){
 }
 
 Twistream::Twistream(std::string c_key, std::string c_sec,
                      std::string token,std::string token_sec):
-auth_header(c_key,c_sec,token,token_sec),
-APIPROTOCOL("https://"),
-APIDOMEINNAME("api.twitter.com"),
-APIVERSION ("1.1"){
+auth_header(c_key,c_sec,token,token_sec){
 }
 
 Twistream::Twistream(Twiauth certifyer):
-APIPROTOCOL("https://"),
-APIDOMEINNAME("api.twitter.com"),
-APIVERSION ("1.1"),
 auth_header(certifyer){
 }
 
