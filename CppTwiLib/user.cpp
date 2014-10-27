@@ -72,6 +72,10 @@ bool user::getID(int64_t &destination){
     return res;
 }
 
+bool user::getIDstr(std::string &destination){
+    return getValuefromResponse<std::string>("id_str", destination);
+}
+
 bool user::getListedCount(int &destination){
     bool res;
     double temp;

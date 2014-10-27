@@ -34,6 +34,7 @@ public:
     bool getFollowersCount(int& destination);
     bool getFriendsCount(int& destination);
     bool getID(int64_t& destination);
+    bool getIDstr(std::string& destination);
     bool getListedCount(int& destination);
     bool getLocation(std::string& destination);
     bool getName(std::string& destination);
