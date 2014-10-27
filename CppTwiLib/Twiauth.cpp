@@ -9,6 +9,8 @@
 #include "urlencode.h"
 #include "httpssocket.h"
 
+#include "CHttpsSocket.h"
+
 #include "Twiauth.h"
 
 //OpenSSLライブラリの関数群がXcodeでは非推奨となっている為に警告が出るのを抑制
@@ -215,7 +217,14 @@ std::string Twiauth::get_authorize_url(){
     
     //std::cout<<http_header<<std::endl;//for debug
     
-    buffer = https_body(http_header,"api.twitter.com");
+    HttpsSocket socket("api.twitter.com", http_header);
+    
+    //HTTPレスポンスコードが200以外だったら例外を投げる
+    if (!(socket.getResponeCode() == 200)) {
+        throw std::runtime_error("Could not obtain Authrization request token");
+    }
+    
+    buffer = socket.getResponsebody();
     //std::cout<<buffer<<std::endl;
     
     //得られたhttpレスポンスのbodyからrequest_tokenとrequest_token_secを抽出
@@ -260,17 +269,18 @@ bool Twiauth::set_access_token(std::string pin){
     "\r\nConnection: Close\r\n\r\n";
     
 	//std::cout<<http_header<<std::endl;//for debug
+    HttpsSocket socket("api.twitter.com", http_header);
     
-	buffer = https_body(http_header,"api.twitter.com");
+    //HTTPレスポンスコードが200以外だったらfalseを返す
+    if (!(socket.getResponeCode() == 200)) {
+        return false;
+    }
+    
+    buffer = socket.getResponsebody();
 	//std::cout<<buffer<<std::endl;//for debug
     
 	//得られたトークンとユーザー名の文字列を記録
     //得られたhttpレスポンスのbodyからaccess_tokenとaccess_token_secを抽出
-    //受信文字列に"auht_token="が含まれなかったらfalseを返す
-    if (buffer.find("oauth_token=",0) == std::string::npos) {
-        return false;
-    }
-    
 	pos_begin = buffer.find("oauth_token=",0)+sizeof("oauth_token=")-1;
 	pos_end = buffer.find("&",0);
 	access_token = buffer.substr(pos_begin,pos_end - pos_begin);
