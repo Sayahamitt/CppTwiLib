@@ -4,6 +4,7 @@
 #include "urlencode.h"
 #include "Twistream.h"
 
+
 const std::string Twistream::APIPROTOCOL = "https://";
 const std::string Twistream::APIDOMEINNAME = "api.twitter.com";
 const std::string Twistream::APIVERSION = "1.1";
@@ -51,11 +52,6 @@ std::string Twistream::isWhomStream(){
     http_header = requesttoTwitter(GET, "settings.json");
     APIRESOURCENAME = tempAPIRES;
     
-    /*
-    std::cout<<http_header<<std::endl;//for debug
-    std::string buffer = https_body(http_header,"api.twitter.com");
-    std::cout<<buffer<<std::endl;
-    */
     
     picojson::object strip;
     
@@ -97,7 +93,10 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME){
     http_header += auth_header.header_get(APIURL,param)+
     "\r\nConnection: Close\r\n\r\n";
     
-    strResponse = https_body(http_header,"api.twitter.com");
+    HttpsSocket socket("api.twitter.com",http_header);
+    strResponse = socket.getResponsebody();
+    
+    //strResponse = https_body(http_header,"api.twitter.com");
 
     std::string err;
     picojson::parse(response, strResponse.begin(), strResponse.end(),&err);
@@ -106,10 +105,12 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME){
     }
     
     //TwitterAPIからエラーが返ってきていないかチェック
-    try {
-        checkAPIError();
-    } catch (const TwitterException &err) {
-        throw ;
+    if (!(socket.getResponeCode() == 200)) {
+        try {
+            checkAPIError();
+        } catch (const TwitterException &err) {
+            throw ;
+        }
     }
     
     return http_header;
@@ -153,7 +154,10 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME,
     
     //std::cout<<http_header<<std::endl;//for debug
     
-    strResponse = https_body(http_header,"api.twitter.com");
+    HttpsSocket socket("api.twitter.com",http_header);
+    strResponse = socket.getResponsebody();
+    
+    //strResponse = https_body(http_header,"api.twitter.com");
     
     std::string strerr;
     picojson::parse(response, strResponse.begin(), strResponse.end(),&strerr);
@@ -164,10 +168,12 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME,
     //std::cout<<getRawResponse()<<std::endl;//for debug
     
     //TwitterAPIからエラーが返ってきていないかチェック
-    try {
-        checkAPIError();
-    } catch (const TwitterException &err) {
-        throw ;
+    if (!(socket.getResponeCode() == 200)) {
+        try {
+            checkAPIError();
+        } catch (const TwitterException &err) {
+            throw ;
+        }
     }
     
     return http_header;
@@ -184,20 +190,22 @@ void Twistream::checkAPIError(){
             
             if (analyte["errors"].is<picojson::array>()) {
                 picojson::array& anaArray = analyte["errors"].get<picojson::array>();
-                if((anaArray[0].get<picojson::object>()).count("message")){
+                if((anaArray[0].get<picojson::object>()).count("message")&&
+                   (anaArray[0].get<picojson::object>()).count("code")){
                     errormassage = (anaArray[0].get<picojson::object>())["message"].get<std::string>();
-                }
-                if((anaArray[0].get<picojson::object>()).count("code")){
                     errorcode = (unsigned int)(anaArray[0].get<picojson::object>())["code"].get<double>();
+                }else{
+                    throw std::runtime_error("Twitter returned an unexpected format.");
                 }
             }else if(analyte["errors"].is<picojson::object>()){
-                errormassage = analyte["message"].get<std::string>();
-                errorcode = (unsigned int)analyte["code"].get<double>();
+                throw std::runtime_error("Twitter returned an unexpected format.");
             }
             
             TwitterException TwitterAPIError(errormassage, errorcode);
             throw TwitterAPIError;//TwitterAPIがエラーを返した時に投げる例外
         }
+    }else{
+        throw std::runtime_error("Twitter returned an unexpected format.");
     }
 }
 

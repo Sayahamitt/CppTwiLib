@@ -5,8 +5,8 @@
 #include <vector>
 
 #include "Twiauth.h"
-#include "httpssocket.h"
 #include "TwitterException.h"
+#include "CHttpsSocket.h"
 #include "../picojson.h"
 
 #include "user.h"
