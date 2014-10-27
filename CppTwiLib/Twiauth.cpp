@@ -14,20 +14,21 @@
 //OpenSSLライブラリの関数群がXcodeでは非推奨となっている為に警告が出るのを抑制
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
+const std::string Twiauth::request_token_url = "https://api.twitter.com/oauth/request_token";
+const std::string Twiauth::authorize_url = "https://api.twitter.com/oauth/authorize";
+const std::string Twiauth::access_token_url = "https://api.twitter.com/oauth/access_token";
+const std::string Twiauth::c_key_key = "oauth_consumer_key";
+const std::string Twiauth::nonce_key = "oauth_nonce";
+const std::string Twiauth::sig_method_key = "oauth_signature_method";
+const std::string Twiauth::signature_key = "oauth_signature";
+const std::string Twiauth::timestamp_key = "oauth_timestamp";
+const std::string Twiauth::verifier_key = "oauth_verifier";
+const std::string Twiauth::oauth_version_key = "oauth_version";
+const std::string Twiauth::token_key = "oauth_token";
+const std::string Twiauth::sig_method = "HMAC-SHA1";
+const std::string Twiauth::oauth_version = "1.0";
+
 Twiauth::Twiauth(std::string a_c_key, std::string a_c_sec):
-request_token_url("https://api.twitter.com/oauth/request_token"),
-authorize_url("https://api.twitter.com/oauth/authorize"),
-access_token_url("https://api.twitter.com/oauth/access_token"),
-c_key_key("oauth_consumer_key"),
-nonce_key("oauth_nonce"),
-sig_method_key("oauth_signature_method"),
-signature_key("oauth_signature"),
-timestamp_key("oauth_timestamp"),
-verifier_key("oauth_verifier"),
-oauth_version_key("oauth_version"),
-token_key("oauth_token"),
-sig_method("HMAC-SHA1"),
-oauth_version("1.0"),
 c_key(a_c_key),
 c_sec(a_c_sec)
 {
@@ -35,19 +36,6 @@ c_sec(a_c_sec)
 }
 
 Twiauth::Twiauth(std::string a_c_key, std::string a_c_sec, std::string token,std::string token_sec):
-request_token_url("https://api.twitter.com/oauth/request_token"),
-authorize_url("https://api.twitter.com/oauth/authorize"),
-access_token_url("https://api.twitter.com/oauth/access_token"),
-c_key_key("oauth_consumer_key"),
-nonce_key("oauth_nonce"),
-sig_method_key("oauth_signature_method"),
-signature_key("oauth_signature"),
-timestamp_key("oauth_timestamp"),
-verifier_key("oauth_verifier"),
-oauth_version_key("oauth_version"),
-token_key("oauth_token"),
-sig_method("HMAC-SHA1"),
-oauth_version("1.0"),
 c_key(a_c_key),
 c_sec(a_c_sec)
 {
@@ -58,19 +46,6 @@ c_sec(a_c_sec)
 }
 
 Twiauth::Twiauth(const Twiauth &obj):
-request_token_url("https://api.twitter.com/oauth/request_token"),
-authorize_url("https://api.twitter.com/oauth/authorize"),
-access_token_url("https://api.twitter.com/oauth/access_token"),
-c_key_key("oauth_consumer_key"),
-nonce_key("oauth_nonce"),
-sig_method_key("oauth_signature_method"),
-signature_key("oauth_signature"),
-timestamp_key("oauth_timestamp"),
-verifier_key("oauth_verifier"),
-oauth_version_key("oauth_version"),
-token_key("oauth_token"),
-sig_method("HMAC-SHA1"),
-oauth_version("1.0"),
 c_key(obj.c_key),
 c_sec(obj.c_sec)
 {

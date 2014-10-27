@@ -8,23 +8,23 @@
 class Twiauth{
 
  private:
-	const std::string request_token_url;
-	const std::string authorize_url;
-	const std::string access_token_url;
+	const static std::string request_token_url;
+	const static std::string authorize_url;
+	const static std::string access_token_url;
 	
-	const std::string c_key_key;
-	const std::string nonce_key;
-	const std::string sig_method_key;
-	const std::string signature_key;
-	const std::string timestamp_key;
-	const std::string oauth_version_key;
-    const std::string verifier_key;
-	const std::string token_key;
-	
+	const static std::string c_key_key;
+	const static std::string nonce_key;
+	const static std::string sig_method_key;
+	const static std::string signature_key;
+	const static std::string timestamp_key;
+	const static std::string oauth_version_key;
+    const static std::string verifier_key;
+	const static std::string token_key;
+    
+    const static std::string sig_method;
+    const static std::string oauth_version;
     const std::string c_key;
 	const std::string c_sec;
-	const std::string sig_method;
-	const std::string oauth_version;
 	
 	std::string request_token;
 	std::string request_token_sec;
