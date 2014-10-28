@@ -10,15 +10,15 @@
 
 #include <sstream>
 
-StatusResource::StatusResource(std::string c_key, std::string c_sec):Twistream(c_key, c_sec){
+StatusResource::StatusResource(std::string c_key, std::string c_sec):TwitterAPIUser(c_key, c_sec){
     APIRESOURCENAME = "statuses";
 }
 
-StatusResource::StatusResource(std::string c_key,std::string c_sec, std::string token, std::string token_sec):Twistream(c_key,c_sec,token, token_sec){
+StatusResource::StatusResource(std::string c_key,std::string c_sec, std::string token, std::string token_sec):TwitterAPIUser(c_key,c_sec,token, token_sec){
     APIRESOURCENAME = "statuses";
 }
 
-StatusResource::StatusResource(Twiauth certifyer):Twistream(certifyer){
+StatusResource::StatusResource(Twiauth certifyer):TwitterAPIUser(certifyer){
     APIRESOURCENAME = "statuses";
 }
 

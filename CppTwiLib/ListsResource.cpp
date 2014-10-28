@@ -8,15 +8,15 @@
 
 #include "ListsResource.h"
 
-ListsResource::ListsResource(std::string c_key, std::string c_sec):Twistream(c_key, c_sec){
+ListsResource::ListsResource(std::string c_key, std::string c_sec):TwitterAPIUser(c_key, c_sec){
     APIRESOURCENAME = "lists";
 }
 
-ListsResource::ListsResource(std::string c_key,std::string c_sec, std::string token, std::string token_sec):Twistream(c_key,c_sec,token, token_sec){
+ListsResource::ListsResource(std::string c_key,std::string c_sec, std::string token, std::string token_sec):TwitterAPIUser(c_key,c_sec,token, token_sec){
     APIRESOURCENAME = "lists";
 }
 
-ListsResource::ListsResource(Twiauth certifyer):Twistream(certifyer){
+ListsResource::ListsResource(Twiauth certifyer):TwitterAPIUser(certifyer){
     APIRESOURCENAME = "lists";
 }
 

@@ -1,5 +1,5 @@
-#ifndef TWISTREAM_H
-#define TWISTREAM_H
+#ifndef TwitterAPIUser_H
+#define TwitterAPIUser_H
 
 #include <string>
 #include <vector>
@@ -13,7 +13,7 @@
 #include "tweet.h"
 #include "errors.h"
 
-class Twistream{
+class TwitterAPIUser{
 protected:
     Twiauth auth_header;
     std::string OwnerAccount;
@@ -32,11 +32,11 @@ protected:
     std::string APIRESOURCENAME;
     
 public:
-    Twistream(std::string c_key, std::string c_sec);
-    Twistream(std::string c_key, std::string c_sec,
+    TwitterAPIUser(std::string c_key, std::string c_sec);
+    TwitterAPIUser(std::string c_key, std::string c_sec,
               std::string token, std::string token_sec);
-    Twistream(Twiauth certifyer);
-    ~Twistream();
+    TwitterAPIUser(Twiauth certifyer);
+    ~TwitterAPIUser();
     
     std::string get_authorize_url();
     void set_access_token(std::string pin);

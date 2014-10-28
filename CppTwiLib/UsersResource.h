@@ -8,10 +8,10 @@
 
 #ifndef __CppTwiLib__Users__
 #define __CppTwiLib__Users__
-#include "Twistream.h"
+#include "TwitterAPIUser.h"
 #include "user.h"
 
-class UsersResource : public Twistream{
+class UsersResource : public TwitterAPIUser{
 public:
     UsersResource(std::string c_key, std::string c_sec);
     UsersResource(std::string c_key, std::string c_sec, std::string token, std::string token_sec);

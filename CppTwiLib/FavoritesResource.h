@@ -9,10 +9,10 @@
 #ifndef __CppTwiLib__FavoritesResource__
 #define __CppTwiLib__FavoritesResource__
 
-#include "Twistream.h"
+#include "TwitterAPIUser.h"
 #include "tweet.h"
 
-class FavoritesResource : public Twistream{
+class FavoritesResource : public TwitterAPIUser{
 public:
     FavoritesResource(std::string c_key, std::string c_sec);
     FavoritesResource(std::string c_key, std::string c_sec, std::string token, std::string token_sec);

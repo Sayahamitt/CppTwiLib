@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "Twiauth.h"
-#include "Twistream.h"
+#include "TwitterAPIUser.h"
 #include "UsersResource.h"
 #include "StatusResource.h"
 #include "ListsResource.h"

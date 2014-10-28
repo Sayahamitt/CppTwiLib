@@ -9,10 +9,10 @@
 #ifndef __CppTwiLib__StatusResource__
 #define __CppTwiLib__StatusResource__
 
-#include "Twistream.h"
+#include "TwitterAPIUser.h"
 #include "tweet.h"
 
-class StatusResource : public Twistream{
+class StatusResource : public TwitterAPIUser{
 public:
     StatusResource(std::string c_key, std::string c_sec);
     StatusResource(std::string c_key, std::string c_sec, std::string token, std::string token_sec);

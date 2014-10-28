@@ -8,15 +8,15 @@
 
 #include "UsersResource.h"
 
-UsersResource::UsersResource(std::string c_key, std::string c_sec):Twistream(c_key, c_sec){
+UsersResource::UsersResource(std::string c_key, std::string c_sec):TwitterAPIUser(c_key, c_sec){
     APIRESOURCENAME = "users";
 }
 
-UsersResource::UsersResource(std::string c_key,std::string c_sec, std::string token, std::string token_sec):Twistream(c_key,c_sec,token, token_sec){
+UsersResource::UsersResource(std::string c_key,std::string c_sec, std::string token, std::string token_sec):TwitterAPIUser(c_key,c_sec,token, token_sec){
     APIRESOURCENAME = "users";
 }
 
-UsersResource::UsersResource(Twiauth certifyer):Twistream(certifyer){
+UsersResource::UsersResource(Twiauth certifyer):TwitterAPIUser(certifyer){
     APIRESOURCENAME = "users";
 }
 

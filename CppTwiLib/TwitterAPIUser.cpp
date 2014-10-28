@@ -2,37 +2,37 @@
 #include <sstream>
 
 #include "urlencode.h"
-#include "Twistream.h"
+#include "TwitterAPIUser.h"
 
 
-const std::string Twistream::APIPROTOCOL = "https://";
-const std::string Twistream::APIDOMEINNAME = "api.twitter.com";
-const std::string Twistream::APIVERSION = "1.1";
+const std::string TwitterAPIUser::APIPROTOCOL = "https://";
+const std::string TwitterAPIUser::APIDOMEINNAME = "api.twitter.com";
+const std::string TwitterAPIUser::APIVERSION = "1.1";
 
-Twistream::Twistream(std::string c_key, std::string c_sec):
+TwitterAPIUser::TwitterAPIUser(std::string c_key, std::string c_sec):
 auth_header(c_key,c_sec){
 }
 
-Twistream::Twistream(std::string c_key, std::string c_sec,
+TwitterAPIUser::TwitterAPIUser(std::string c_key, std::string c_sec,
                      std::string token,std::string token_sec):
 auth_header(c_key,c_sec,token,token_sec){
 }
 
-Twistream::Twistream(Twiauth certifyer):
+TwitterAPIUser::TwitterAPIUser(Twiauth certifyer):
 auth_header(certifyer){
 }
 
-Twistream::~Twistream(){}
+TwitterAPIUser::~TwitterAPIUser(){}
 
-std::string Twistream::get_authorize_url(){
+std::string TwitterAPIUser::get_authorize_url(){
     return auth_header.get_authorize_url();
 }
 
-void Twistream::set_access_token(std::string pin){
+void TwitterAPIUser::set_access_token(std::string pin){
     auth_header.set_access_token(pin);
 }
 
-void Twistream::showWhomStream(){
+void TwitterAPIUser::showWhomStream(){
     if(!OwnerAccount.empty()){
         std::cout<<OwnerAccount<<std::endl;
     }else{
@@ -40,7 +40,7 @@ void Twistream::showWhomStream(){
     }
 }
 
-std::string Twistream::isWhomStream(){
+std::string TwitterAPIUser::isWhomStream(){
     std::string http_header;
     std::string tempAPIRES = APIRESOURCENAME;
     
@@ -68,15 +68,15 @@ std::string Twistream::isWhomStream(){
     return strip["screen_name"].get<std::string>();
 }
 
-std::string Twistream::getRawResponse(){
+std::string TwitterAPIUser::getRawResponse(){
     return strResponse;
 }
 
-std::string Twistream::StringtoURLencode(std::string PlainString){
+std::string TwitterAPIUser::StringtoURLencode(std::string PlainString){
     return percentEnc(PlainString);
 }
 
-std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME){
+std::string TwitterAPIUser::requesttoTwitter(HttpMethod method,std::string APINAME){
     std::string http_header;
     stringparams param;
     
@@ -116,7 +116,7 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME){
     return http_header;
 }
 
-std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME,
+std::string TwitterAPIUser::requesttoTwitter(HttpMethod method,std::string APINAME,
                                         std::map<std::string, std::string> parameters){
     std::string http_header;
     std::string url_param;
@@ -180,7 +180,7 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME,
 }
 
 
-void Twistream::checkAPIError(){
+void TwitterAPIUser::checkAPIError(){
     //TwitterAPIがerrorを返した際に例外を投げる処理//
     if (response.is<picojson::object>()){
         picojson::object analyte = response.get<picojson::object>();
@@ -210,6 +210,6 @@ void Twistream::checkAPIError(){
     }
 }
 
-void Twistream::debug(){
+void TwitterAPIUser::debug(){
     auth_header.debug();
 }

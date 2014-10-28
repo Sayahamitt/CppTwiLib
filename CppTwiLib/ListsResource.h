@@ -9,12 +9,12 @@
 #ifndef __CppTwiLib__ListsResource__
 #define __CppTwiLib__ListsResource__
 
-#include "Twistream.h"
+#include "TwitterAPIUser.h"
 #include "tweet.h"
 #include "user.h"
 #include "list.h"
 
-class ListsResource : public Twistream{
+class ListsResource : public TwitterAPIUser{
 public:
     ListsResource(std::string c_key, std::string c_sec);
     ListsResource(std::string c_key, std::string c_sec, std::string token, std::string token_sec);
