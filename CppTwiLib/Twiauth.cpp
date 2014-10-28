@@ -303,7 +303,7 @@ std::string Twiauth::getAccessTokenSecret() const{
     return access_token_sec;
 }
 
-void Twiauth::debug(){
+void Twiauth::debug() const{
     std::cout<<c_key<<std::endl;
     std::cout<<c_sec<<std::endl;
     std::cout<<access_token<<std::endl;

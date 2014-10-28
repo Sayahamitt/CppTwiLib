@@ -61,7 +61,7 @@ public:
     
     bool empty() const;
     
-    void debug();
+    void debug() const;
     
     std::string get_authorize_url();
     bool set_access_token(std::string pin);
