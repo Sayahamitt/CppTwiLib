@@ -78,11 +78,11 @@ Twiauth& Twiauth::operator=(const Twiauth& left){
     return *this;
 }
 
-const bool Twiauth::empty(){
+bool Twiauth::empty() const{
     return isempty;
 }
 
-const std::string Twiauth::create_header(const api_method_type method,const std::string url,stringparams params){
+std::string Twiauth::create_header(const api_method_type method,const std::string url,stringparams params) const{
     stringparams oauth_params;
     std::string auth_header;
     std::string http_header;
@@ -195,15 +195,15 @@ const std::string Twiauth::create_header(const api_method_type method,const std:
     return auth_header;
 }
 
-const std::string Twiauth::header_get(std::string url,stringparams params){
+std::string Twiauth::header_get(std::string url,stringparams params) const{
     return create_header(n_get,url,params);
 }
 
-const std::string Twiauth::header_post(std::string url,stringparams params){
+std::string Twiauth::header_post(std::string url,stringparams params) const{
     return create_header(n_post,url,params);
 }
 
-const std::string Twiauth::Extractformbody(const std::string& holestring,const std::string& key){
+std::string Twiauth::Extractformbody(const std::string& holestring,const std::string& key) const{
     unsigned long pos_begin,pos_end;
     std::string KeywithEq = key + "=";
     std::string value;
@@ -295,11 +295,11 @@ bool Twiauth::set_access_token(std::string pin){
     return true;
 }
 
-const std::string Twiauth::getAccessToken(){
+std::string Twiauth::getAccessToken() const{
     return access_token;
 }
 
-const std::string Twiauth::getAccessTokenSecret(){
+std::string Twiauth::getAccessTokenSecret() const{
     return access_token_sec;
 }
 
