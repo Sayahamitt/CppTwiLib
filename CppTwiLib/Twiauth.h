@@ -44,8 +44,8 @@ private:
         n_access
     };
     
-    std::string create_header(api_method_type method,std::string url,stringparams params);
-    std::string Extractformbody(const std::string& holestring,const std::string& key);
+    const std::string create_header(const api_method_type method,const std::string url,stringparams params);
+    const std::string Extractformbody(const std::string& holestring,const std::string& key);
     
     bool isempty;
     
@@ -59,18 +59,18 @@ public:
     
     Twiauth& operator=(const Twiauth& left);
     
-    bool empty();
+    const bool empty();
     
     void debug();
     
     std::string get_authorize_url();
     bool set_access_token(std::string pin);
     
-    std::string getAccessToken();
-    std::string getAccessTokenSecret();
+    const std::string getAccessToken();
+    const std::string getAccessTokenSecret();
     
-    std::string header_get(std::string url,stringparams params);
-    std::string header_post(std::string url,stringparams params);
+    const std::string header_get(std::string url,stringparams params);
+    const std::string header_post(std::string url,stringparams params);
     //std::string header_delete(std::string url);
     //std::string header_put(std::string url);
     //std::string header_head(std::string url);
