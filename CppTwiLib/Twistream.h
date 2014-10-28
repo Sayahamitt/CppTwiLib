@@ -51,7 +51,7 @@ protected:
     std::string StringtoURLencode(std::string PlainString);
     std::string requesttoTwitter(HttpMethod method,std::string APINAME);
     std::string requesttoTwitter(HttpMethod method,std::string APINAME,
-                                   std::map<std::string, std::string> parameters);
+                                 std::map<std::string, std::string> parameters);
     template<typename TYPE>
     bool createObjectsArray(std::vector<TYPE>& destination){
         bool state = true;

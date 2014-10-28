@@ -97,7 +97,7 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME){
     strResponse = socket.getResponsebody();
     
     //strResponse = https_body(http_header,"api.twitter.com");
-
+    
     std::string err;
     picojson::parse(response, strResponse.begin(), strResponse.end(),&err);
     if (!err.empty()) {
@@ -117,7 +117,7 @@ std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME){
 }
 
 std::string Twistream::requesttoTwitter(HttpMethod method,std::string APINAME,
-                                          std::map<std::string, std::string> parameters){
+                                        std::map<std::string, std::string> parameters){
     std::string http_header;
     std::string url_param;
     std::string AuthHeader;
@@ -196,6 +196,7 @@ void Twistream::checkAPIError(){
                     errorcode = (unsigned int)(anaArray[0].get<picojson::object>())["code"].get<double>();
                 }else{
                     throw std::runtime_error("Twitter returned an unexpected format.");
+                    
                 }
             }else if(analyte["errors"].is<picojson::object>()){
                 throw std::runtime_error("Twitter returned an unexpected format.");
