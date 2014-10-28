@@ -9,43 +9,40 @@ const std::string TwitterAPIUser::APIPROTOCOL = "https://";
 const std::string TwitterAPIUser::APIDOMEINNAME = "api.twitter.com";
 const std::string TwitterAPIUser::APIVERSION = "1.1";
 
-TwitterAPIUser::TwitterAPIUser(std::string c_key, std::string c_sec):
+TwitterAPIUser::TwitterAPIUser(const std::string& c_key, const std::string&  c_sec):
 auth_header(c_key,c_sec){
 }
 
-TwitterAPIUser::TwitterAPIUser(std::string c_key, std::string c_sec,
-                     std::string token,std::string token_sec):
+TwitterAPIUser::TwitterAPIUser(const std::string&  c_key, const std::string&  c_sec,
+                               const std::string&  token, const std::string&  token_sec):
 auth_header(c_key,c_sec,token,token_sec){
 }
 
-TwitterAPIUser::TwitterAPIUser(Twiauth certifyer):
+TwitterAPIUser::TwitterAPIUser(const std::string&  ownername,const std::string&  c_key, const std::string&  c_sec,const std::string&  token, const std::string&  token_sec):
+auth_header(c_key,c_sec,token,token_sec){
+    OwnerAccountname = ownername;
+}
+
+TwitterAPIUser::TwitterAPIUser(const Twiauth& certifyer):
 auth_header(certifyer){
 }
 
 TwitterAPIUser::~TwitterAPIUser(){}
 
-std::string TwitterAPIUser::get_authorize_url(){
-    return auth_header.get_authorize_url();
-}
-
-void TwitterAPIUser::set_access_token(std::string pin){
-    auth_header.set_access_token(pin);
-}
-
-void TwitterAPIUser::showWhomStream(){
-    if(!OwnerAccount.empty()){
-        std::cout<<OwnerAccount<<std::endl;
+void TwitterAPIUser::showWhomResource(){
+    if(!OwnerAccountname.empty()){
+        std::cout<<OwnerAccountname<<std::endl;
     }else{
-        std::cout<<isWhomStream()<<std::endl;
+        std::cout<<isWhomResource()<<std::endl;
     }
 }
 
-std::string TwitterAPIUser::isWhomStream(){
+std::string TwitterAPIUser::isWhomResource(){
     std::string http_header;
     std::string tempAPIRES = APIRESOURCENAME;
     
-    if (!OwnerAccount.empty()) {
-        return  OwnerAccount;
+    if (!OwnerAccountname.empty()) {
+        return  OwnerAccountname;
     }
     
     APIRESOURCENAME = "account";
@@ -68,15 +65,23 @@ std::string TwitterAPIUser::isWhomStream(){
     return strip["screen_name"].get<std::string>();
 }
 
-std::string TwitterAPIUser::getRawResponse(){
+std::string TwitterAPIUser::isWhomResource() const{
+    return OwnerAccountname;
+}
+
+std::string TwitterAPIUser::getRawResponse() const{
     return strResponse;
 }
 
-std::string TwitterAPIUser::StringtoURLencode(std::string PlainString){
+picojson::value TwitterAPIUser::getPicojsonResponse() const{
+    return response;
+}
+
+std::string TwitterAPIUser::StringtoURLencode(const std::string& PlainString) const{
     return percentEnc(PlainString);
 }
 
-std::string TwitterAPIUser::requesttoTwitter(HttpMethod method,std::string APINAME){
+std::string TwitterAPIUser::requesttoTwitter(const HttpMethod& method,const std::string& APINAME){
     std::string http_header;
     stringparams param;
     
@@ -116,8 +121,7 @@ std::string TwitterAPIUser::requesttoTwitter(HttpMethod method,std::string APINA
     return http_header;
 }
 
-std::string TwitterAPIUser::requesttoTwitter(HttpMethod method,std::string APINAME,
-                                        std::map<std::string, std::string> parameters){
+std::string TwitterAPIUser::requesttoTwitter(const HttpMethod& method,const std::string& APINAME,const std::map<std::string, std::string>& parameters){
     std::string http_header;
     std::string url_param;
     std::string AuthHeader;
@@ -125,7 +129,7 @@ std::string TwitterAPIUser::requesttoTwitter(HttpMethod method,std::string APINA
     
     std::string APIURL = APIPROTOCOL + APIDOMEINNAME + "/" + APIVERSION + "/" +APIRESOURCENAME + "/" + APINAME;
     
-    for (std::map<std::string,std::string>::iterator itargparam =parameters.begin();
+    for (std::map<std::string,std::string>::const_iterator itargparam = parameters.begin();
          itargparam != parameters.end();
          itargparam++) {
         if (method==GET) {

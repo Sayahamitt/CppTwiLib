@@ -15,8 +15,8 @@
 
 class TwitterAPIUser{
 protected:
-    Twiauth auth_header;
-    std::string OwnerAccount;
+    const Twiauth auth_header;
+    std::string OwnerAccountname;
     
     std::string strResponse;
     picojson::value response;
@@ -32,33 +32,33 @@ protected:
     std::string APIRESOURCENAME;
     
 public:
-    TwitterAPIUser(std::string c_key, std::string c_sec);
-    TwitterAPIUser(std::string c_key, std::string c_sec,
-              std::string token, std::string token_sec);
-    TwitterAPIUser(Twiauth certifyer);
+    TwitterAPIUser(const std::string& c_key, const std::string&  c_sec);
+    TwitterAPIUser(const std::string&  c_key, const std::string&  c_sec,
+              const std::string&  token, const std::string&  token_sec);
+    TwitterAPIUser(const std::string&  ownername,const std::string&  c_key, const std::string&  c_sec,const std::string&  token, const std::string&  token_sec);
+    TwitterAPIUser(const Twiauth& certifyer);
     ~TwitterAPIUser();
     
-    std::string get_authorize_url();
-    void set_access_token(std::string pin);
-    
-    void showWhomStream();
-    std::string isWhomStream();
-    std::string getRawResponse();
+    void showWhomResource();
+    std::string isWhomResource();
+    std::string isWhomResource() const;
+    std::string getRawResponse() const;
+    picojson::value getPicojsonResponse() const;
     
     void debug();
     
 protected:
-    std::string StringtoURLencode(std::string PlainString);
-    std::string requesttoTwitter(HttpMethod method,std::string APINAME);
-    std::string requesttoTwitter(HttpMethod method,std::string APINAME,
-                                 std::map<std::string, std::string> parameters);
+    std::string StringtoURLencode(const std::string& PlainString) const;
+    std::string requesttoTwitter(const HttpMethod& method,const std::string& APINAME);
+    std::string requesttoTwitter(const HttpMethod& method,const std::string& APINAME,
+                                 const std::map<std::string, std::string>& parameters);
     template<typename TYPE>
-    bool createObjectsArray(std::vector<TYPE>& destination){
+    bool createObjectsArray(std::vector<TYPE>& destination) const{
         bool state = true;
         if (response.is<picojson::array>()){
-            picojson::array& picoTL = response.get<picojson::array>();
+            const picojson::array& picoTL = response.get<picojson::array>();
             
-            for (picojson::array::iterator i = picoTL.begin(); i != picoTL.end(); i++) {
+            for (picojson::array::const_iterator i = picoTL.begin(); i != picoTL.end(); i++) {
                 if (!(*i).is<picojson::array>()) {
                     destination.push_back( (*i).get<picojson::object>() );
                 }
