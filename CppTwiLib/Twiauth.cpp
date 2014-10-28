@@ -203,11 +203,22 @@ std::string Twiauth::header_post(std::string url,stringparams params){
 	return create_header(n_post,url,params);
 }
 
+std::string Twiauth::Extractformbody(const std::string& holestring,const std::string& key){
+    unsigned long pos_begin,pos_end;
+    std::string KeywithEq = key + "=";
+    std::string value;
+    
+    pos_begin = holestring.find(KeywithEq,0)+KeywithEq.length();
+    pos_end = holestring.find("&",pos_begin);
+    value = holestring.substr(pos_begin,pos_end - pos_begin);
+    
+    return value;
+}
+
 std::string Twiauth::get_authorize_url(){
     stringparams param;
     std::string http_header;
     std::string auth_header = create_header(n_request,request_token_url,param);
-    unsigned long pos_begin,pos_end;
     std::string buffer;
     //---request_token取得---
     //HTTPヘッダ作成
@@ -233,12 +244,8 @@ std::string Twiauth::get_authorize_url(){
         throw std::runtime_error("Could not obtain Authrization request token");
     }
     
-    pos_begin = buffer.find("oauth_token=",0)+sizeof("oauth_token=")-1;
-    pos_end = buffer.find("&",0);
-    request_token = buffer.substr(pos_begin,pos_end - pos_begin);
-    pos_begin = buffer.find("oauth_token_secret=",0)+sizeof("oauth_token_secret=")-1;
-    pos_end = buffer.find("&",pos_begin);
-    request_token_sec = buffer.substr(pos_begin,pos_end - pos_begin);
+    request_token = Extractformbody(buffer, "oauth_token");
+    request_token_sec = Extractformbody(buffer, "oauth_token_secret");
     
     //std::cout<<request_token<<std::endl;//for debug
     //std::cout<<request_token_sec<<std::endl;//for debug
@@ -250,8 +257,7 @@ bool Twiauth::set_access_token(std::string pin){
     stringparams param;
 	std::string http_header;
 	std::string auth_header;
-	unsigned long pos_begin,pos_end;
-	std::string buffer;
+    std::string buffer;
 	std::string verifier;
     
 	//---access_token取得---
@@ -281,18 +287,10 @@ bool Twiauth::set_access_token(std::string pin){
     
 	//得られたトークンとユーザー名の文字列を記録
     //得られたhttpレスポンスのbodyからaccess_tokenとaccess_token_secを抽出
-	pos_begin = buffer.find("oauth_token=",0)+sizeof("oauth_token=")-1;
-	pos_end = buffer.find("&",0);
-	access_token = buffer.substr(pos_begin,pos_end - pos_begin);
-	pos_begin = buffer.find("oauth_token_secret=",0)+sizeof("oauth_token_secret=")-1;
-	pos_end = buffer.find("&",pos_begin);
-	access_token_sec = buffer.substr(pos_begin,pos_end - pos_begin);
-	pos_begin = buffer.find("user_id=",0)+sizeof("user_id=")-1;
-	pos_end = buffer.find("&",pos_begin);
-	m_user_id = buffer.substr(pos_begin,pos_end - pos_begin);
-	pos_begin = buffer.find("screen_name=",0)+sizeof("screen_name=")-1;
-	pos_end = buffer.find("&",pos_begin);
-	m_screen_name = buffer.substr(pos_begin,pos_end - pos_begin);
+    access_token = Extractformbody(buffer, "oauth_token");
+    access_token_sec = Extractformbody(buffer, "oauth_token_secret");
+    m_user_id = Extractformbody(buffer, "user_id");
+    m_screen_name = Extractformbody(buffer, "screen_name");
     
     return true;
 }

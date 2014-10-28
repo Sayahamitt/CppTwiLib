@@ -45,6 +45,7 @@ class Twiauth{
 	};
 	
 	std::string create_header(api_method_type method,std::string url,stringparams params);
+    std::string Extractformbody(const std::string& holestring,const std::string& key);
     
     bool isempty;
 	
