@@ -31,3 +31,7 @@ Objects::~Objects(){}
 bool Objects::empty(){
     return isempty;
 }
+
+void Objects::setJson(const picojson::object& response){
+    this->response = response;
+}

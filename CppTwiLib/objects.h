@@ -24,7 +24,7 @@ public:
     
     Objects& operator=(const Objects& rhs);
     
-    void setJson(picojson::object);
+    void setJson(const picojson::object& response);
     bool empty();
 
 protected:
