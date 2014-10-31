@@ -37,7 +37,7 @@ public:
               const std::string& token, const std::string& token_sec);
     TwitterAPIUser(const std::string& ownername,const std::string& c_key, const std::string& c_sec,const std::string& token, const std::string& token_sec);
     TwitterAPIUser(const Twiauth& certifyer);
-    ~TwitterAPIUser();
+    virtual ~TwitterAPIUser();
     
     void showWhomResource();
     std::string isWhomResource();
