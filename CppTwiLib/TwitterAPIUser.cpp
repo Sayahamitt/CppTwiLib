@@ -200,18 +200,18 @@ void TwitterAPIUser::checkAPIError(){
                     errormassage = (anaArray[0].get<picojson::object>())["message"].get<std::string>();
                     errorcode = (unsigned int)(anaArray[0].get<picojson::object>())["code"].get<double>();
                 }else{
-                    throw std::runtime_error("Twitter returned an unexpected format.");
+                    throw std::runtime_error("Twitter returned an unexpected error format.");
                     
                 }
             }else if(analyte["errors"].is<picojson::object>()){
-                throw std::runtime_error("Twitter returned an unexpected format.");
+                throw std::runtime_error("Twitter returned an unexpected error format.");
             }
             
             TwitterException TwitterAPIError(errormassage, errorcode);
             throw TwitterAPIError;//TwitterAPIがエラーを返した時に投げる例外
         }
     }else{
-        throw std::runtime_error("Twitter returned an unexpected format.");
+        throw std::runtime_error("Twitter returned an unexpected error format.");
     }
 }
 
