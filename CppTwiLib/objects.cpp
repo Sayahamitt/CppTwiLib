@@ -8,16 +8,18 @@
 
 #include "objects.h"
 
-Objects::Objects(picojson::object strip):response(strip){
-    isempty=false;
+Objects::Objects(picojson::object strip):
+response(strip),
+isempty(false){
 }
-Objects::Objects(){
-    isempty=true;
+Objects::Objects():
+isempty(true){
 }
 
-Objects::Objects(const Objects& obj){
-    this->response = obj.response;
-    this->isempty = obj.isempty;
+Objects::Objects(const Objects& obj):
+response(obj.response),
+isempty(obj.isempty)
+{
 }
 
 Objects& Objects::operator=(const Objects &rhs){
