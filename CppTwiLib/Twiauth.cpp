@@ -32,35 +32,36 @@ const std::string Twiauth::oauth_version = "1.0";
 
 Twiauth::Twiauth(const std::string& a_c_key, const std::string& a_c_sec):
 c_key(a_c_key),
-c_sec(a_c_sec)
+c_sec(a_c_sec),
+isempty(false)
 {
 }
 
 Twiauth::Twiauth(const std::string& a_c_key,const std::string& a_c_sec,const std::string& token,const std::string& token_sec):
 c_key(a_c_key),
-c_sec(a_c_sec)
+c_sec(a_c_sec),
+access_token(token),
+access_token_sec(token_sec),
+isempty(false)
 {
-    access_token = token;
-    access_token_sec = token_sec;
-    
-    isempty = false;
 }
 
 Twiauth::Twiauth(const Twiauth &obj):
 c_key(obj.c_key),
-c_sec(obj.c_sec)
+c_sec(obj.c_sec),
+request_token(obj.request_token),
+request_token_sec(obj.request_token_sec),
+access_token(obj.access_token),
+access_token_sec(obj.access_token_sec),
+m_user_id(obj.m_user_id),
+m_screen_name(obj.m_screen_name),
+isempty(obj.isempty)
 {
-    this->request_token = obj.request_token;
-    this->request_token_sec = obj.request_token_sec;
-    this->access_token = obj.access_token;
-    this->access_token_sec = obj.access_token_sec;
-    this->m_user_id = obj.m_user_id;
-    this->m_screen_name = obj.m_screen_name;
-    this->isempty = obj.isempty;
 }
 
-Twiauth::Twiauth(){
-    isempty = true;
+Twiauth::Twiauth():
+isempty(true)
+{
 }
 
 Twiauth::~Twiauth(){}
