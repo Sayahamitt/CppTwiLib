@@ -9,18 +9,19 @@ const std::string TwitterAPIUser::APIPROTOCOL = "https://";
 const std::string TwitterAPIUser::APIDOMEINNAME = "api.twitter.com";
 const std::string TwitterAPIUser::APIVERSION = "1.1";
 
-TwitterAPIUser::TwitterAPIUser(const std::string& c_key, const std::string&  c_sec):
+TwitterAPIUser::TwitterAPIUser(const std::string& c_key, const std::string& c_sec):
 auth_header(c_key,c_sec){
 }
 
-TwitterAPIUser::TwitterAPIUser(const std::string&  c_key, const std::string&  c_sec,
-                               const std::string&  token, const std::string&  token_sec):
+TwitterAPIUser::TwitterAPIUser(const std::string& c_key, const std::string& c_sec,
+                               const std::string& token, const std::string& token_sec):
 auth_header(c_key,c_sec,token,token_sec){
 }
 
-TwitterAPIUser::TwitterAPIUser(const std::string&  ownername,const std::string&  c_key, const std::string&  c_sec,const std::string&  token, const std::string&  token_sec):
-auth_header(c_key,c_sec,token,token_sec){
-    OwnerAccountname = ownername;
+TwitterAPIUser::TwitterAPIUser(const std::string& ownername,const std::string& c_key, const std::string& c_sec,const std::string& token, const std::string& token_sec):
+auth_header(c_key,c_sec,token,token_sec),
+OwnerAccountname(ownername)
+{
 }
 
 TwitterAPIUser::TwitterAPIUser(const Twiauth& certifyer):
