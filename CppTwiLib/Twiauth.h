@@ -44,15 +44,15 @@ private:
         n_access
     };
     
-    std::string create_header(const api_method_type method,const std::string url,stringparams params) const;
+    std::string create_header(const api_method_type& method,const std::string& url, stringparams& params) const;
     std::string Extractformbody(const std::string& holestring,const std::string& key) const;
     
     bool isempty;
     
 public:
     
-    Twiauth(std::string a_c_key, std::string a_c_sec, std::string token,std::string token_sec);
-    Twiauth(std::string a_c_key, std::string a_c_sec);
+    Twiauth(const std::string& a_c_key,const std::string& a_c_sec,const std::string& token,const std::string& token_sec);
+    Twiauth(const std::string& a_c_key, const std::string& a_c_sec);
     Twiauth(const Twiauth &obj);
     Twiauth();
     ~Twiauth();
@@ -64,13 +64,13 @@ public:
     void debug() const;
     
     std::string get_authorize_url();
-    bool set_access_token(std::string pin);
+    bool set_access_token(const std::string& pin);
     
     std::string getAccessToken() const;
     std::string getAccessTokenSecret() const;
     
-    std::string header_get(std::string url,stringparams params) const;
-    std::string header_post(std::string url,stringparams params) const;
+    std::string header_get(const std::string& url,stringparams& params) const;
+    std::string header_post(const std::string& url,stringparams& params) const;
     //std::string header_delete(std::string url);
     //std::string header_put(std::string url);
     //std::string header_head(std::string url);

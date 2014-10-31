@@ -30,14 +30,13 @@ const std::string Twiauth::token_key = "oauth_token";
 const std::string Twiauth::sig_method = "HMAC-SHA1";
 const std::string Twiauth::oauth_version = "1.0";
 
-Twiauth::Twiauth(std::string a_c_key, std::string a_c_sec):
+Twiauth::Twiauth(const std::string& a_c_key, const std::string& a_c_sec):
 c_key(a_c_key),
 c_sec(a_c_sec)
 {
-    isempty = false;
 }
 
-Twiauth::Twiauth(std::string a_c_key, std::string a_c_sec, std::string token,std::string token_sec):
+Twiauth::Twiauth(const std::string& a_c_key,const std::string& a_c_sec,const std::string& token,const std::string& token_sec):
 c_key(a_c_key),
 c_sec(a_c_sec)
 {
@@ -82,7 +81,7 @@ bool Twiauth::empty() const{
     return isempty;
 }
 
-std::string Twiauth::create_header(const api_method_type method,const std::string url,stringparams params) const{
+std::string Twiauth::create_header(const api_method_type& method,const std::string& url, stringparams& params) const{
     stringparams oauth_params;
     std::string auth_header;
     std::string http_header;
@@ -195,11 +194,11 @@ std::string Twiauth::create_header(const api_method_type method,const std::strin
     return auth_header;
 }
 
-std::string Twiauth::header_get(std::string url,stringparams params) const{
+std::string Twiauth::header_get(const std::string& url,stringparams& params) const{
     return create_header(n_get,url,params);
 }
 
-std::string Twiauth::header_post(std::string url,stringparams params) const{
+std::string Twiauth::header_post(const std::string& url,stringparams& params) const{
     return create_header(n_post,url,params);
 }
 
@@ -253,7 +252,7 @@ std::string Twiauth::get_authorize_url(){
     return authorize_url+'?'+token_key+'='+request_token;
 }
 
-bool Twiauth::set_access_token(std::string pin){
+bool Twiauth::set_access_token(const std::string& pin){
     stringparams param;
     std::string http_header;
     std::string auth_header;
