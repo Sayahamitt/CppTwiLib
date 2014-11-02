@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "macros.h"
+
 #include "Twiauth.h"
 #include "TwitterException.h"
 #include "CHttpsSocket.h"

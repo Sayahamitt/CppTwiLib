@@ -9,7 +9,9 @@
 #ifndef __CppTwiLib__objects__
 #define __CppTwiLib__objects__
 
-#include <iostream>
+clude <iostream>
+
+#include "macros.h"
 #include "../picojson.h"
 
 class Objects{
@@ -36,6 +38,4 @@ protected:
         distination = response[FieldName].get<TYPE>();
         return true;
     }
-};
-
-#endif /* defined(__CppTwiLib__objects__) */
+   wiLib__objects__) */
