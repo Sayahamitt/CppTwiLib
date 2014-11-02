@@ -20,14 +20,23 @@ public:
     
     std::vector<tweet> mentions_timeline(std::map<std::string, std::string> paramaters);
     std::vector<tweet> hometimeline(std::map<std::string, std::string> paramaters);
+    
     std::vector<tweet> user_timeline(std::string screenname, std::map<std::string, std::string> paramaters);
+    std::vector<tweet> user_timeline(std::string screenname);
+    std::vector<tweet> user_timeline(std::map<std::string,std::string> paramaters);
+    
     std::vector<tweet> retweets_of_me(std::map<std::string, std::string> paramaters);
-    std::vector<tweet> retweets_id(int64_t ID,std::map<std::string, std::string> paramaters);
-    tweet show_id(int64_t ID,std::map<std::string, std::string> paramaters);
-    tweet destory_id(int64_t ID);
-    tweet update(std::string tweet);
-    tweet retweet_id(int64_t ID);
-    std::vector<int64_t> retweeters_ids(int64_t ID);
+    
+    std::vector<tweet> retweets_id(std::string tweetID,std::map<std::string, std::string> paramaters);
+    std::vector<tweet> retweets_id(std::string tweetID);
+    
+    tweet show_id(std::string tweetID,std::map<std::string, std::string> paramaters);
+    tweet show_id(std::string tweetID);
+    
+    tweet destory_id(std::string tweetID);
+    tweet update(std::string status);
+    tweet retweet_id(std::string tweetID);
+    std::vector<int64_t> retweeters_ids(std::string tweetID);
 
 };
 
