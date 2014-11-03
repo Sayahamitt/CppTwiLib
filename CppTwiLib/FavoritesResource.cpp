@@ -29,13 +29,13 @@ std::vector<tweet> FavoritesResource::list(std::map<std::string, std::string> pa
     return favlist;
 }
 
-tweet FavoritesResource::destroy(int64_t statusID){
+tweet FavoritesResource::destroy(std::string statusID){
     std::map<std::string, std::string> paramaters;
     tweet status;
     
-    paramaters["id"]=std::to_string(statusID);
+    paramaters["id"]=statusID;
     
-    requesttoTwitter(POST, "destroy/.json",paramaters);
+    requesttoTwitter(POST, "destroy.json",paramaters);
     
     if (response.is<picojson::object>()){
         status = tweet(response.get<picojson::object>());
@@ -43,13 +43,13 @@ tweet FavoritesResource::destroy(int64_t statusID){
     return status;
 }
 
-tweet FavoritesResource::create(int64_t statusID){
+tweet FavoritesResource::create(std::string statusID){
     std::map<std::string, std::string> paramaters;
     tweet status;
     
-    paramaters["id"]=std::to_string(statusID);
+    paramaters["id"]=statusID;
     
-    requesttoTwitter(POST, "create/.json",paramaters);
+    requesttoTwitter(POST, "create.json",paramaters);
     
     if (response.is<picojson::object>()){
         status = tweet(response.get<picojson::object>());

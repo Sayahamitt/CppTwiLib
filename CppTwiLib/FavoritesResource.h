@@ -19,8 +19,8 @@ public:
     FavoritesResource(Twiauth certifyer);
     
     std::vector<tweet> list(std::map<std::string, std::string> paramaters);
-    tweet destroy(int64_t statusID);
-    tweet create(int64_t statusID);
+    tweet destroy(std::string statusID);
+    tweet create(std::string statusID);
 };
 
 #endif /* defined(__CppTwiLib__FavoritesResource__) */
