@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "objects.h"
-#include "mediaInTweet.h"
 
 class entities:public Objects{
 protected:
