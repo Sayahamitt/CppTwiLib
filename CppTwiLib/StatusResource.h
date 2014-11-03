@@ -36,7 +36,7 @@ public:
     tweet destory_id(std::string tweetID);
     tweet update(std::string status);
     tweet retweet_id(std::string tweetID);
-    std::vector<int64_t> retweeters_ids(std::string tweetID);
+    std::vector<std::string> retweeters_ids(std::string tweetID);
 
 };
 
