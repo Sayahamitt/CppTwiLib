@@ -151,3 +151,23 @@ bool user::getWithheldinCountries(std::string &destination){
 bool user::getWithheldScope(std::string &destination){
     return getValuefromResponse<std::string>("withheld_scope", destination);
 }
+
+bool user::getUrls(std::vector<std::string>& destination){
+    if (response.count("entities")==0) {
+        return false;
+    }
+    entities entity(response["entities"].get<picojson::object>());
+    entity.getUrls(destination);
+    
+    return true;
+}
+
+bool user::getDescriptionUrls(std::vector<std::string>& destination){
+    if (response.count("entities")==0) {
+        return false;
+    }
+    entities entity(response["entities"].get<picojson::object>());
+    entity.getDescriptionUrls(destination);
+    
+    return true;
+}

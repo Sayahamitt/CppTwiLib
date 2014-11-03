@@ -96,3 +96,73 @@ bool tweet::getUser(user& destination){
     destination = account;
     return res;
 }
+
+bool tweet::getHashtags(std::vector<std::string> &destination){
+    if (response.count("entities")==0) {
+        return false;
+    }
+    entities entity(response["entities"].get<picojson::object>());
+    entity.getHashTags(destination);
+    
+    return true;
+}
+
+bool tweet::getUrls(std::vector<std::string>& destination){
+    if (response.count("entities")==0) {
+        return false;
+    }
+    entities entity(response["entities"].get<picojson::object>());
+    entity.getUrls(destination);
+    
+    return true;
+}
+
+bool tweet::getDisplayUrls(std::vector<std::string>& destination){
+    if (response.count("entities")==0) {
+        return false;
+    }
+    entities entity(response["entities"].get<picojson::object>());
+    entity.getDisplayUrls(destination);
+    
+    return true;
+}
+
+bool tweet::getUserMentions(std::vector<std::string>& destination){
+    if (response.count("entities")==0) {
+        return false;
+    }
+    entities entity(response["entities"].get<picojson::object>());
+    entity.getUserMentions(destination);
+    
+    return true;
+}
+
+bool tweet::getMediaPageUrls(std::vector<std::string>& destination){
+    if (response.count("entities")==0) {
+        return false;
+    }
+    entities entity(response["entities"].get<picojson::object>());
+    entity.getMediaPageUrls(destination);
+    
+    return true;
+}
+
+bool tweet::getMediaUrls(std::vector<std::string>& destination){
+    if (response.count("entities")==0) {
+        return false;
+    }
+    entities entity(response["entities"].get<picojson::object>());
+    entity.getMediaUrls(destination);
+    
+    return true;
+}
+
+bool tweet::getMediaUrlsHttps(std::vector<std::string>& destination){
+    if (response.count("entities")==0) {
+        return false;
+    }
+    entities entity(response["entities"].get<picojson::object>());
+    entity.getMediaUrlsHttps(destination);
+    
+    return true;
+}

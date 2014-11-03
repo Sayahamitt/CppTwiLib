@@ -12,6 +12,7 @@
 #include <string>
 
 #include "objects.h"
+#include "entities.h"
 class user;
 
 class tweet : public Objects{
@@ -34,6 +35,15 @@ public:
     bool getSource(std::string& destination);
     bool getText(std::string& destination);
     bool getUser(user& destination);
+    
+    bool getHashtags(std::vector<std::string>& destination);
+    bool getUrls(std::vector<std::string>& destination);
+    bool getDisplayUrls(std::vector<std::string>& destination);
+    bool getUserMentions(std::vector<std::string>& destination);
+    
+    bool getMediaPageUrls(std::vector<std::string>& destination);
+    bool getMediaUrls(std::vector<std::string>& destination);
+    bool getMediaUrlsHttps(std::vector<std::string>& destination);
     
 };
 

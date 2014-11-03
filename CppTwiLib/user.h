@@ -27,7 +27,6 @@ public:
     bool isContibutorEnabled(bool& destination);
     bool getCreatedAt(std::string& destination);
     bool getDescription(std::string& destination);
-    //entities getEntities();
     bool getFavouritesCount(int& destination);
     bool isFollowRequestSent(bool& destination);
     bool isFollowing(bool& destination);
@@ -48,6 +47,10 @@ public:
     bool isVerified(bool& destination);
     bool getWithheldinCountries(std::string& destination);
     bool getWithheldScope(std::string& destination);
+
+    bool getUrls(std::vector<std::string>& destination);
+    bool getDescriptionUrls(std::vector<std::string>& destination);
+
 };
 
 #endif /* defined(__CppTwiLib__user__) */
