@@ -156,6 +156,7 @@ tweet StatusResource::retweet_id(std::string tweetID){
 std::vector<std::string> StatusResource::retweeters_ids(std::string tweetID){
     std::map<std::string, std::string> param;
     std::vector<std::string> retweeters;
+    int64_t retweeterid;
     param["id"]=tweetID;
     
     std::string nextCoursor;
@@ -165,11 +166,12 @@ std::vector<std::string> StatusResource::retweeters_ids(std::string tweetID){
             return retweeters;
         }
         picojson::object resObj = response.get<picojson::object>();
-        if (resObj.count("previous_cursor_str") &
-            resObj.count("ids") &
-            resObj.count("next_cursor_str")) {
+        if ((resObj.count("previous_cursor_str") == 0 )&&
+            (resObj.count("ids") == 0) &&
+            (resObj.count("next_cursor_str") == 0 )) {
             return  retweeters;
         }
+
         nextCoursor = resObj["next_cursor_str"].get<std::string>();
         if (resObj["ids"].is<picojson::array>() == false) {
             return retweeters;
@@ -177,7 +179,8 @@ std::vector<std::string> StatusResource::retweeters_ids(std::string tweetID){
         const picojson::array& ids = resObj["ids"].get<picojson::array>();
         
         for (picojson::array::const_iterator i = ids.begin(); ids.empty() == false && i != ids.end(); i++) {
-            retweeters.push_back( (*i).get<std::string>() );
+            retweeterid = (*i).get<double>();
+            retweeters.push_back( std::to_string(retweeterid) );
         }
         
         param["cursor"]=nextCoursor;

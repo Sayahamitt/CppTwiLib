@@ -17,13 +17,13 @@ void APITest();
 void StatusTest();
 void UserTest();
 void ListsTest();
-    
+
 int main(){
     //UserTest();
-    StatusTest();
-    //AuthTest();
+    //StatusTest();
+    AuthTest();
     //APITest();
-  return 0;
+    return 0;
 }
 
 void ListsTest(){
@@ -73,9 +73,9 @@ void StatusTest(){
     std::string status;
     tweet mypost;
     tweet myshowing;
-    int64_t mypost_id;
+    std::string mypost_id;
     //param["count"]="200";
-
+    
     timeline = statusapi.hometimeline(param);
     
     for (std::vector<tweet>::iterator i = timeline.begin(); i != timeline.end(); i++) {
@@ -83,17 +83,20 @@ void StatusTest(){
         std::vector<std::string> hashtags;
         std::vector<std::string> urls;
         std::vector<std::string> medisurls;
-
+        std::vector<std::string> retweeters;
+        
+        tweet rtstatus;
+        
         (*i).getUser(account);
         account.getName(name);
         (*i).getText(status);
-        (*i).getID(mypost_id);
+        (*i).getIDstr(mypost_id);
         
         (*i).getUserMentions(usermentions);
         (*i).getHashtags(hashtags);
         (*i).getUrls(urls);
         (*i).getMediaUrls(medisurls);
-
+        
         
         std::cout<<name<<":"<<status<<std::endl;
         std::cout<<"TweetID:"<<mypost_id<<std::endl;
@@ -113,26 +116,39 @@ void StatusTest(){
         for (std::vector<std::string>::iterator i = medisurls.begin(); i != medisurls.end(); i++) {
             std::cout<<"MediaURL:"<<(*i)<<std::endl;
         }
+        
+        if ((*i).getRetweetedStatus(rtstatus)) {
+            rtstatus.getIDstr(mypost_id);
+            retweeters = statusapi.retweeters_ids(mypost_id);
+            
+            std::cout<<"RetweetersID:"<<std::flush;
+            for (std::vector<std::string>::iterator i = retweeters.begin(); i != retweeters.end(); i++) {
+                std::cout<<(*i)<<", "<<std::flush;
+            }
+            std::cout<<std::endl;
+        }
+        
         std::cout<<"-------------------------"<<std::endl;
     }
-    timeline[1].getID(mypost_id);
+    
+    //timeline[1].getID(mypost_id);
     //statusapi.retweet_id(mypost_id);
     
     //std::cout<<statusapi.retweeters_ids(mypost_id)[0]<<std::endl;
     /*
-    std::string poststr;
-    std::cout<<"ツイートを入力してください"<<std::endl;
-    std::cin>>poststr;
-    mypost = statusapi.update(poststr);
-    mypost.getID(mypost_id);
-    mypost.getText(status);
-    std::cout<<mypost_id<<std::endl;
-    std::cout<<status<<std::endl;
-    myshowing = statusapi.show_id(mypost_id, param);
-    myshowing.getText(status);
-    std::cout<<"showing : "<<status<<std::endl;
-    std::cin>>name;
-    statusapi.destory_id(mypost_id);
+     std::string poststr;
+     std::cout<<"ツイートを入力してください"<<std::endl;
+     std::cin>>poststr;
+     mypost = statusapi.update(poststr);
+     mypost.getID(mypost_id);
+     mypost.getText(status);
+     std::cout<<mypost_id<<std::endl;
+     std::cout<<status<<std::endl;
+     myshowing = statusapi.show_id(mypost_id, param);
+     myshowing.getText(status);
+     std::cout<<"showing : "<<status<<std::endl;
+     std::cin>>name;
+     statusapi.destory_id(mypost_id);
      */
 }
 
@@ -166,6 +182,69 @@ void AuthTest(){
     //status.debug();
     //StatusResource status(c_key,c_sec,certifyer.getAccessToken(),certifyer.getAccessTokenSecret());
     
+    
+    StatusResource statusapi(certifyer);
+    
+    tweet mypost;
+    tweet myshowing;
+    std::string mypost_id;
+    //param["count"]="200";
+    
+    timeline = statusapi.hometimeline(param);
+    
+    for (std::vector<tweet>::iterator i = timeline.begin(); i != timeline.end(); i++) {
+        std::vector<std::string> usermentions;
+        std::vector<std::string> hashtags;
+        std::vector<std::string> urls;
+        std::vector<std::string> medisurls;
+        std::vector<std::string> retweeters;
+        
+        tweet rtstatus;
+        
+        (*i).getUser(account);
+        account.getName(name);
+        (*i).getText(statusdata);
+        (*i).getIDstr(mypost_id);
+        
+        (*i).getUserMentions(usermentions);
+        (*i).getHashtags(hashtags);
+        (*i).getUrls(urls);
+        (*i).getMediaUrls(medisurls);
+        
+        
+        std::cout<<name<<":"<<statusdata<<std::endl;
+        std::cout<<"TweetID:"<<mypost_id<<std::endl;
+        
+        for (std::vector<std::string>::iterator i = usermentions.begin(); i != usermentions.end(); i++) {
+            std::cout<<"Mention to:"<<(*i)<<std::endl;
+        }
+        
+        for (std::vector<std::string>::iterator i = hashtags.begin(); i != hashtags.end(); i++) {
+            std::cout<<"hashtag:"<<(*i)<<std::endl;
+        }
+        
+        for (std::vector<std::string>::iterator i = urls.begin(); i != urls.end(); i++) {
+            std::cout<<"URL:"<<(*i)<<std::endl;
+        }
+        
+        for (std::vector<std::string>::iterator i = medisurls.begin(); i != medisurls.end(); i++) {
+            std::cout<<"MediaURL:"<<(*i)<<std::endl;
+        }
+        
+        if ((*i).getRetweetedStatus(rtstatus)) {
+            rtstatus.getIDstr(mypost_id);
+            retweeters = statusapi.retweeters_ids(mypost_id);
+            
+            std::cout<<"RetweetersID:"<<std::flush;
+            for (std::vector<std::string>::iterator i = retweeters.begin(); i != retweeters.end(); i++) {
+                std::cout<<(*i)<<", "<<std::flush;
+            }
+            std::cout<<std::endl;
+        }
+        
+        std::cout<<"-------------------------"<<std::endl;
+    }
+    /*
     std::string poststr;
     std::cout<<"ツイートを入力してください"<<std::endl;
     std::cin>>poststr;
@@ -182,6 +261,8 @@ void AuthTest(){
         
         std::cout<<name<<":"<<statusdata<<std::endl;
     }
+     
+    */
 }
 
 void APITest(){
