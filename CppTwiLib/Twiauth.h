@@ -35,13 +35,11 @@ private:
     std::string m_screen_name;
     
     enum api_method_type{
-        n_get,
-        n_post,
-        n_delete,
-        n_put,
-        n_head,
-        n_request,
-        n_access
+        get,
+        post,
+        post_www_form,
+        request,
+        access
     };
     
     std::string create_header(const api_method_type& method,const std::string& url, stringparams& params) const;
@@ -70,10 +68,8 @@ public:
     std::string getAccessTokenSecret() const;
     
     std::string header_get(const std::string& url,stringparams& params) const;
-    std::string header_post(const std::string& url,stringparams& params) const;
-    //std::string header_delete(std::string url);
-    //std::string header_put(std::string url);
-    //std::string header_head(std::string url);
+    std::string header_post_www_form(const std::string& url,stringparams& wwwFormDatas) const;
+    std::string header_post(const std::string& url,const std::string& postdata) const;
     
 };
 

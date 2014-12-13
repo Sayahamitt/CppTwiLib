@@ -105,10 +105,13 @@ std::string Twiauth::create_header(const api_method_type& method,const std::stri
     oauth_params.add(c_key_key,c_key);
     oauth_params.add(sig_method_key,sig_method);
     oauth_params.add(oauth_version_key,oauth_version);
-    if(method==n_access){
+    if(method==access){
         oauth_params.add(token_key,request_token);
         oauth_params+=params;
-    }else if(method!=n_request){
+    }else if(method == post){
+        oauth_params+=params;
+        oauth_params.add(token_key,access_token);
+    }else if(method!=request){
         oauth_params.add(token_key,access_token);
     }
     
@@ -130,18 +133,22 @@ std::string Twiauth::create_header(const api_method_type& method,const std::stri
     oauth_params.add(nonce_key,nonce);//パラメータに追加
     
     //シグニチャ作成
-    params+=oauth_params;
+    stringparams sig_params;
+    sig_params += oauth_params;
+    if(method != access && method != post){
+        sig_params += params;
+    }
     
-    params.sort_by_key();
-    sig_plain = params.comb_params_by("=","&");
+    sig_params.sort_by_key();
+    sig_plain = sig_params.comb_params_by("=","&");
     
     //シグネチャ生成用鍵の作成とapi_urlの設定
     std::string sig_key;
     
-    if(method==n_access){
+    if(method==access){
         sig_key = c_sec+"&"+request_token_sec;
         api_url = access_token_url;
-    }else if(method==n_request){
+    }else if(method==request){
         sig_key = c_sec+"&";
         api_url = request_token_url;
     }else{
@@ -152,18 +159,16 @@ std::string Twiauth::create_header(const api_method_type& method,const std::stri
     //メソッド指定子の決定
     std::string http_type;
     switch(method){
-        case n_get:
+        case get:
             http_type = "GET";break;
-        case n_request:
+        case request:
             http_type = "GET";break;
-        case n_access:
+        case access:
             http_type = "GET";break;
-        case n_post:
+        case post:
             http_type = "POST";break;
-        case n_delete:
-            http_type = "DELETE";break;
-        case n_head:
-            http_type = "HEAD";break;
+        case post_www_form:
+            http_type = "POST";break;
         default:
             std::cout<<"HTTP method type is bad!! @Twiauth::crete_header"
             <<std::endl;
@@ -174,7 +179,7 @@ std::string Twiauth::create_header(const api_method_type& method,const std::stri
     
     sig_plain = http_type+"&"+percentEnc(api_url)+"&"+percentEnc(sig_plain);
     
-    //std::cout<<sig_plain<<std::endl;//for debug
+    std::cout<<sig_plain<<std::endl;//for debug
     
     //シグニチャ生成,OpenSSLのHMAC関数を利用
     HMAC(EVP_sha1(),sig_key.c_str(),(int)sig_key.length(),
@@ -196,11 +201,24 @@ std::string Twiauth::create_header(const api_method_type& method,const std::stri
 }
 
 std::string Twiauth::header_get(const std::string& url,stringparams& params) const{
-    return create_header(n_get,url,params);
+    return create_header(get,url,params);
 }
 
-std::string Twiauth::header_post(const std::string& url,stringparams& params) const{
-    return create_header(n_post,url,params);
+std::string Twiauth::header_post_www_form(const std::string& url,stringparams& wwwFormDatas) const{
+    return create_header(post_www_form,url,wwwFormDatas);
+}
+
+std::string Twiauth::header_post(const std::string &url, const std::string &postdata) const{
+    stringparams params;
+    unsigned char hash[SHA_DIGEST_LENGTH];
+    
+    SHA1((unsigned char*)postdata.c_str(),(unsigned long)postdata.size(),hash);
+    std::string body_hash = base64_encode(hash,sizeof(hash));
+    body_hash = percentEnc(body_hash);
+    
+    params.add("oauth_body_hash", body_hash);
+    
+    return create_header(post, url, params);
 }
 
 std::string Twiauth::Extractformbody(const std::string& holestring,const std::string& key) const{
@@ -218,7 +236,7 @@ std::string Twiauth::Extractformbody(const std::string& holestring,const std::st
 std::string Twiauth::get_authorize_url(){
     stringparams param;
     std::string http_header;
-    std::string auth_header = create_header(n_request,request_token_url,param);
+    std::string auth_header = create_header(request,request_token_url,param);
     std::string buffer;
     //---request_token取得---
     //HTTPヘッダ作成
@@ -267,7 +285,7 @@ bool Twiauth::set_access_token(const std::string& pin){
     
     param.add(verifier_key,verifier);
     
-    auth_header=create_header(n_access,access_token_url,param);
+    auth_header=create_header(access,access_token_url,param);
     
     //HTTPヘッダ作成
     http_header = "GET /oauth/access_token HTTP/1.1\r\nHost: api.twitter.com\r\n"+
