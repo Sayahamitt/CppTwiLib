@@ -17,11 +17,13 @@ void APITest();
 void StatusTest();
 void UserTest();
 void ListsTest();
+void MediaPostTest();
 
 int main(){
     //UserTest();
     //StatusTest();
-    AuthTest();
+    MediaPostTest();
+    //AuthTest();
     //APITest();
     return 0;
 }
@@ -64,6 +66,13 @@ void UserTest(){
     
 }
 
+void MediaPostTest(){
+    StatusResource statusapi(c_key,c_sec,my_access_token,my_access_sec);
+    
+    statusapi.postImagetoTwitter("/Volumes/Working Data/Gentle Sheep/CppTwiLib/testmedia-s.png", "test-a");
+    std::cout<<statusapi.getRawResponse()<<std::endl;
+}
+
 void StatusTest(){
     std::map<std::string,std::string> param;
     StatusResource statusapi(c_key,c_sec,my_access_token,my_access_sec);
@@ -77,6 +86,9 @@ void StatusTest(){
     //param["count"]="200";
     
     timeline = statusapi.hometimeline(param);
+    
+    //std::cout<<statusapi.getRawResponse()<<std::endl;
+    //mypost = statusapi.update_with_media("media upload のてすと", "/Volumes/Working Data/Gentle Sheep/CppTwiLib/testmedia.png");
     
     for (std::vector<tweet>::iterator i = timeline.begin(); i != timeline.end(); i++) {
         std::vector<std::string> usermentions;
@@ -135,12 +147,12 @@ void StatusTest(){
     //statusapi.retweet_id(mypost_id);
     
     //std::cout<<statusapi.retweeters_ids(mypost_id)[0]<<std::endl;
-    /*
+    
      std::string poststr;
      std::cout<<"ツイートを入力してください"<<std::endl;
      std::cin>>poststr;
      mypost = statusapi.update(poststr);
-     mypost.getID(mypost_id);
+     mypost.getIDstr(mypost_id);
      mypost.getText(status);
      std::cout<<mypost_id<<std::endl;
      std::cout<<status<<std::endl;
@@ -149,7 +161,7 @@ void StatusTest(){
      std::cout<<"showing : "<<status<<std::endl;
      std::cin>>name;
      statusapi.destory_id(mypost_id);
-     */
+    
 }
 
 void AuthTest(){
