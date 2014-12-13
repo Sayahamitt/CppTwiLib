@@ -12,7 +12,7 @@
 //OpenSSLライブラリの関数群がXcodeでは非推奨となっている為、大量の警告が出るのを抑制
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
-HttpsSocket::HttpsSocket(std::string inHost, std::string requestHeader){
+HttpsSocket::HttpsSocket(std::string inHost, std::string& requestHeader){
     HostNname = inHost;
     https_body(requestHeader);
 }
@@ -35,7 +35,7 @@ HttpsSocket& HttpsSocket::operator=(const HttpsSocket& rhs){
 
 HttpsSocket::~HttpsSocket(){}
 
-std::string HttpsSocket::https_socket(std::string request_str){
+std::string HttpsSocket::https_socket(std::string& request_str){
     BIO* bio;
     SSL* ssl;
     SSL_CTX* ctx;
@@ -77,29 +77,25 @@ std::string HttpsSocket::https_socket(std::string request_str){
     BIO_free_all(bio);
     SSL_CTX_free(ctx);
     
-    std::string firstline;
-    size_t endofline;
-    size_t codeBegin;
-    size_t codeEnd;
-    size_t codeLength;
     
-    endofline = ResponseString.find("\r\n",0);
-    firstline = ResponseString.substr(0,endofline);
+    //<HTTPステータスコードの抽出>
+    size_t endofline = ResponseString.find("\r\n",0);
+    std::string firstline = ResponseString.substr(0,endofline);
     
-    codeBegin = firstline.find_last_of("HTTP/1.1 ",0) + sizeof("HTTP/1.1 ") -1;
-    codeEnd = firstline.find(" ",codeBegin) -1;
-    codeLength = codeEnd - codeBegin + 1;
+    size_t codeBegin = firstline.find_last_of("HTTP/1.1 ",0) + sizeof("HTTP/1.1 ") -1;
+    size_t codeEnd = firstline.find(" ",codeBegin) -1;
+    size_t codeLength = codeEnd - codeBegin + 1;
     
-    std::string codeStr;
-    codeStr = firstline.substr(codeBegin, codeLength);
+    std::string codeStr = firstline.substr(codeBegin, codeLength);
     
     ResponeCode = atoi(codeStr.c_str());
+    //</HTTPステータスコードの抽出>
     
     //std::cout<<ResponeCode<<std::endl;
     return ResponseString;
 }
 
-std::string HttpsSocket::https_body(std::string request_str){
+std::string HttpsSocket::https_body(std::string& request_str){
     std::string hole_data;
     std::string body;
     unsigned long copy_pos=0;

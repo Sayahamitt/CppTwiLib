@@ -22,7 +22,7 @@ private:
     std::string ResponseBody;
     unsigned int ResponeCode;
 public:
-    HttpsSocket(std::string inHost, std::string requestHeader);
+    HttpsSocket(std::string inHost, std::string& requestHeader);
     HttpsSocket(HttpsSocket& obj);
     ~HttpsSocket();
     
@@ -32,7 +32,7 @@ public:
     unsigned int getResponeCode();
     
 private:
-    std::string https_socket(std::string request_str);
-    std::string https_body(std::string request_str);
+    std::string https_socket(std::string& request_str);
+    std::string https_body(std::string& request_str);
 };
 #endif /* defined(__CppTwiLib__CHttpsSocket__) */
