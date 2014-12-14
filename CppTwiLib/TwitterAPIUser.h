@@ -36,7 +36,7 @@ protected:
 public:
     TwitterAPIUser(const std::string& c_key, const std::string& c_sec);
     TwitterAPIUser(const std::string& c_key, const std::string& c_sec,
-              const std::string& token, const std::string& token_sec);
+                   const std::string& token, const std::string& token_sec);
     TwitterAPIUser(const std::string& ownername,const std::string& c_key, const std::string& c_sec,const std::string& token, const std::string& token_sec);
     TwitterAPIUser(const Twiauth& certifyer);
     virtual ~TwitterAPIUser();
@@ -49,11 +49,13 @@ public:
     
     void debug();
     
+    void postImagetoTwitter(const std::string& filepath,const std::string& filename);
+    
 protected:
     std::string StringtoURLencode(const std::string& PlainString) const;
     std::string requesttoTwitter(const HttpMethod& method,const std::string& APINAME);
-    std::string requesttoTwitter(const HttpMethod& method,const std::string& APINAME,
-                                 const std::map<std::string, std::string>& parameters);
+    std::string requesttoTwitter(const HttpMethod& method,const std::string& APINAME,const std::map<std::string, std::string>& parameters);
+    
     template<typename TYPE>
     bool createObjectsArray(std::vector<TYPE>& destination) const{
         bool state = true;

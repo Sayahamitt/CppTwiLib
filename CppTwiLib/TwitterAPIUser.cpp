@@ -1,8 +1,13 @@
 #include <iostream>
 #include <sstream>
+#include <fstream>
+
+#include <cstdlib>
+#include <ctime>
 
 #include "urlencode.h"
 #include "TwitterAPIUser.h"
+#include "base64.h"
 
 
 const std::string TwitterAPIUser::APIPROTOCOL = "https://";
@@ -149,7 +154,7 @@ std::string TwitterAPIUser::requesttoTwitter(const HttpMethod& method,const std:
         AuthHeader = auth_header.header_get(APIURL,param);
     }else if (method == POST){
         http_header += "POST ";
-        AuthHeader = auth_header.header_post(APIURL,param);
+        AuthHeader = auth_header.header_post_www_form(APIURL,param);
     }
     http_header += "/" + APIVERSION + "/" + APIRESOURCENAME + "/" + APINAME + "?";
     http_header += url_param;
@@ -184,6 +189,98 @@ std::string TwitterAPIUser::requesttoTwitter(const HttpMethod& method,const std:
     return http_header;
 }
 
+void TwitterAPIUser::postImagetoTwitter(const std::string& filepath,const std::string& filename){
+    std::string http_header;
+    std::string url_param;
+    std::string AuthHeader;
+    stringparams param;
+    stringparams damy;
+    
+    std::string APIURL = "https://upload.twitter.com/1.1/media/upload.json";
+    
+    char* _boundary = new char[33];
+    time_t now_time;
+    time(&now_time);
+    srand((unsigned int)now_time);
+    for(int i=0;i<33;i++){
+        _boundary[i] = rand() % 25 + 97;//UTF-8専用
+    }_boundary[32]=0;
+    
+    std::string bounary(_boundary);
+    
+    std::string http_body;
+    size_t filesize = 0;
+    
+    //HTTPリクエスト作成
+    //画像ファイルオープン
+    std::fstream file;
+    file.open((filepath), std::ios::in | std::ios::binary);
+    if (! file.is_open()) {
+        throw std::runtime_error("faild to open a file");
+    }
+    //ファイルサイズ計測
+    file.seekg(0,std::fstream::beg);
+    std::fstream::pos_type begin = file.tellg();
+    file.seekg(0,std::fstream::end);
+    std::fstream::pos_type end = file.tellg();
+    filesize = end - begin;
+    file.seekg(std::ios::beg);
+    
+    //HTTPボディ作成
+    char* mediadata = new char[filesize];
+    file.read(mediadata, filesize);
+    //std::string datastr = base64_encode((unsigned char*)mediadata, (unsigned int)filesize);
+    std::string datastr(mediadata,filesize);
+    
+    //http_body += "\r\nContent-Type: application/octet-stream\r\n";
+    http_body += "--" + bounary +"\r\n";
+    //http_body += "Content-Transfer-Encoding: base64\r\n";
+    http_body += "Content-Disposition: form-data; name=\"media\"; filename=\""+ filename +"\"\r\nContent-Type: application/octet-stream\r\n\r\n" + datastr + "\r\n";
+    http_body += "--" + bounary + "--\r\n";
+    
+    //http_body += datastr;
+    //HTTPヘッダ作成
+    AuthHeader = auth_header.header_post(APIURL,http_body);
+    http_header += "POST ";
+    http_header += "/1.1/media/upload.json";
+    //http_header += url_param;
+    http_header += " HTTP/1.1\r\n";
+    //http_header += "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\r\nAccept: */*\r\n";
+    http_header += "Content-Type: multipart/form-data, boundary=\"" + bounary + "\"\r\n";
+    http_header += AuthHeader+"\r\n";
+    http_header += "Connection: close\r\n";
+    http_header += "Host: upload.twitter.com\r\n";
+    //http_header += "Content-Type: image/png\r\n";
+    //http_header += "Content-Transfer-Encoding: base64\r\n";
+    http_header += "Content-Length: " + std::to_string(http_body.size()) + "\r\n\r\n";
+    
+    http_header.append(http_body);
+    
+    std::cout<<http_header<<std::endl;//for debug
+    
+    
+    
+    HttpsSocket socket("upload.twitter.com",http_header);
+    strResponse = socket.getResponsebody();
+    
+    
+    std::string strerr;
+    picojson::parse(response, strResponse.begin(), strResponse.end(),&strerr);
+    if (!strerr.empty()) {
+        throw std::runtime_error(strerr);//picojsonパース失敗時例外
+    }
+    
+    //std::cout<<getRawResponse()<<std::endl;//for debug
+    
+    //TwitterAPIからエラーが返ってきていないかチェック
+    if (!(socket.getResponeCode() == 200)) {
+        try {
+            checkAPIError();
+        } catch (const TwitterException &err) {
+            throw ;
+        }
+    }
+}
 
 void TwitterAPIUser::checkAPIError(){
     //TwitterAPIがerrorを返した際に例外を投げる処理//
