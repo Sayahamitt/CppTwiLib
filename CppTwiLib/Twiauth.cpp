@@ -179,7 +179,7 @@ std::string Twiauth::create_header(const api_method_type& method,const std::stri
     
     sig_plain = http_type+"&"+percentEnc(api_url)+"&"+percentEnc(sig_plain);
     
-    std::cout<<sig_plain<<std::endl;//for debug
+    //std::cout<<sig_plain<<std::endl;//for debug
     
     //シグニチャ生成,OpenSSLのHMAC関数を利用
     HMAC(EVP_sha1(),sig_key.c_str(),(int)sig_key.length(),
@@ -194,8 +194,7 @@ std::string Twiauth::create_header(const api_method_type& method,const std::stri
     
     //Authorizationヘッダ作成
     auth_header = "Authorization: OAuth "+
-    oauth_params.comb_params_by("=\"","\", ")+
-    "\"";
+    oauth_params.comb_params_by("=\"","\", ")+"\"";
     
     return auth_header;
 }
