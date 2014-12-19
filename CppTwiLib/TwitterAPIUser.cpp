@@ -190,14 +190,9 @@ std::string TwitterAPIUser::requesttoTwitter(const HttpMethod& method,const std:
 }
 
 void TwitterAPIUser::postImagetoTwitter(const std::string& filepath,const std::string& filename){
-    std::string http_header;
-    std::string url_param;
-    std::string AuthHeader;
-    stringparams param;
-    stringparams damy;
-    
     std::string APIURL = "https://upload.twitter.com/1.1/media/upload.json";
     
+    //boundary作成
     char* _boundary = new char[33];
     time_t now_time;
     time(&now_time);
@@ -208,11 +203,7 @@ void TwitterAPIUser::postImagetoTwitter(const std::string& filepath,const std::s
     
     std::string bounary(_boundary);
     
-    std::string http_body;
-    size_t filesize = 0;
-    
-    //HTTPリクエスト作成
-    //画像ファイルオープン
+    //ファイルオープン
     std::fstream file;
     file.open((filepath), std::ios::in | std::ios::binary);
     if (! file.is_open()) {
@@ -223,42 +214,31 @@ void TwitterAPIUser::postImagetoTwitter(const std::string& filepath,const std::s
     std::fstream::pos_type begin = file.tellg();
     file.seekg(0,std::fstream::end);
     std::fstream::pos_type end = file.tellg();
-    filesize = end - begin;
+    size_t filesize = end - begin;
     file.seekg(std::ios::beg);
     
-    //HTTPボディ作成
+    //ファイル読み込み
     char* mediadata = new char[filesize];
     file.read(mediadata, filesize);
-    //std::string datastr = base64_encode((unsigned char*)mediadata, (unsigned int)filesize);
     std::string datastr(mediadata,filesize);
     
-    //http_body += "\r\nContent-Type: application/octet-stream\r\n";
-    http_body += "--" + bounary +"\r\n";
-    //http_body += "Content-Transfer-Encoding: base64\r\n";
+    //HTTPボディ作成
+    std::string http_body = "--" + bounary +"\r\n";
     http_body += "Content-Disposition: form-data; name=\"media\"; filename=\""+ filename +"\"\r\nContent-Type: application/octet-stream\r\n\r\n" + datastr + "\r\n";
     http_body += "--" + bounary + "--\r\n";
     
-    //http_body += datastr;
+    
     //HTTPヘッダ作成
-    AuthHeader = auth_header.header_post(APIURL,http_body);
-    http_header += "POST ";
-    http_header += "/1.1/media/upload.json";
-    //http_header += url_param;
-    http_header += " HTTP/1.1\r\n";
-    //http_header += "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\r\nAccept: */*\r\n";
+    std::string http_header = "POST /1.1/media/upload.json HTTP/1.1\r\n";
     http_header += "Content-Type: multipart/form-data, boundary=\"" + bounary + "\"\r\n";
-    http_header += AuthHeader+"\r\n";
+    http_header += auth_header.header_post(APIURL,http_body)+"\r\n";
     http_header += "Connection: close\r\n";
     http_header += "Host: upload.twitter.com\r\n";
-    //http_header += "Content-Type: image/png\r\n";
-    //http_header += "Content-Transfer-Encoding: base64\r\n";
     http_header += "Content-Length: " + std::to_string(http_body.size()) + "\r\n\r\n";
     
     http_header.append(http_body);
     
-    std::cout<<http_header<<std::endl;//for debug
-    
-    
+    //std::cout<<http_header<<std::endl;//for debug
     
     HttpsSocket socket("upload.twitter.com",http_header);
     strResponse = socket.getResponsebody();
